@@ -2,6 +2,8 @@
 
 export const AdminProductsPage = () => {
   return (
-    <div>AdminProductsPage</div>
+    <div>
+      <h1>Admin Products Page</h1>
+    </div>
   )
 }
