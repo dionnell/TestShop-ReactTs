@@ -1,6 +1,6 @@
 
 
-export const Register = () => {
+export const RegisterPage = () => {
   return (
     <div>Register</div>
   )

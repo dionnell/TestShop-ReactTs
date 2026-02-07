@@ -1,6 +1,6 @@
 
 
-export const AdminProductsPage = () => {
+export const AdminProductPage = () => {
   return (
     <div>AdminProductsPage</div>
   )
