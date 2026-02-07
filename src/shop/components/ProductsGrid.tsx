@@ -3,6 +3,8 @@ import { Filter, Grid, List } from "lucide-react"
 import type { Product } from "@/mocks/products.mock"
 import { ProductCard } from "./ProductCard"
 import { FilterSidebar } from "./FilterSidebar"
+import { useSearchParams } from "react-router"
+import { useState } from "react"
 
 
 interface Props {
@@ -10,6 +12,17 @@ interface Props {
 }
 
 export const ProductsGrid = ({products} : Props) => {
+
+  const [searchParams, setSearchParams,] = useSearchParams()
+  const [showFilters, setShowFilters] = useState(false)
+  
+  const viewMode = searchParams.get('viewMode') || 'grid'
+
+  const handleViewModeChange = (mode: 'grid' | 'list') => {
+    searchParams.set('viewMode', mode)
+    setSearchParams(searchParams)
+  }
+
   return (
     <section className="py-12 px-4 lg:px-8">
       <div className="container mx-auto">
@@ -32,9 +45,10 @@ export const ProductsGrid = ({products} : Props) => {
             
             <div className="hidden md:flex border rounded-md">
               <Button
-                variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                variant={viewMode === 'grid' 
+                  ? 'default' : 'ghost'}
                 size="sm"
-                onClick={() => setViewMode('grid')}
+                onClick={() => handleViewModeChange('grid')}
                 className="rounded-r-none"
               >
                 <Grid className="h-4 w-4" />
@@ -42,7 +56,7 @@ export const ProductsGrid = ({products} : Props) => {
               <Button
                 variant={viewMode === 'list' ? 'default' : 'ghost'}
                 size="sm"
-                onClick={() => setViewMode('list')}
+                onClick={() => handleViewModeChange('list')}
                 className="rounded-l-none"
               >
                 <List className="h-4 w-4" />
