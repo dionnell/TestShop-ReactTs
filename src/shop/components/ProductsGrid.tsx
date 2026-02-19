@@ -1,15 +1,30 @@
 import { Button } from "@/components/ui/button"
 import { Filter, Grid, List } from "lucide-react"
-import type { Product } from "@/mocks/products.mock"
 import { ProductCard } from "./ProductCard"
 import { FilterSidebar } from "./FilterSidebar"
 import { useSearchParams } from "react-router"
 import { useState } from "react"
+import type { Product } from "@/interface/product.interface"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
 
 
 interface Props {
-    products: Product[]
+    products: Product[],
 }
+
+const limitOptions = [
+  9,
+  12,
+  24,
+  48,
+]
 
 export const ProductsGrid = ({products} : Props) => {
 
@@ -21,6 +36,14 @@ export const ProductsGrid = ({products} : Props) => {
   const handleViewModeChange = (mode: 'grid' | 'list') => {
     searchParams.set('viewMode', mode)
     setSearchParams(searchParams)
+  }
+
+  const handleLimitChange = (value: number | null) => {
+    if(value != null) {
+    searchParams.set('page', '1') // Resetear a la página 1 al cambiar el filtro
+    searchParams.set('limit', String(value))
+    setSearchParams(searchParams)
+    }
   }
 
   return (
@@ -42,7 +65,27 @@ export const ProductsGrid = ({products} : Props) => {
               <Filter className="h-4 w-4 mr-2" />
               Filtros
             </Button>
-            
+            <div className="hidden md:flex justify-start items-center space-x-2 ">
+              <span className='text-xl font-light'>Vistas: </span>
+              <Combobox 
+                items={limitOptions}
+                defaultValue={limitOptions[0]}
+                onValueChange={handleLimitChange}
+              >
+                <ComboboxInput placeholder="Select a framework" />
+                <ComboboxContent>
+                  <ComboboxEmpty>No items found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+
+            </div>
             <div className="hidden md:flex border rounded-md">
               <Button
                 variant={viewMode === 'grid' 
@@ -96,10 +139,11 @@ export const ProductsGrid = ({products} : Props) => {
                 <ProductCard
                   key={product.id}
                   id={product.id}
-                  name={product.name}
+                  name={product.title}
                   price={product.price}
-                  image={product.image}
-                  category={product.category}
+                  image={product.images[0]}
+                  category={product.tags[0]}
+                  size={product.sizes}
                 />
               ))}
             </div>

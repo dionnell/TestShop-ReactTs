@@ -18,6 +18,11 @@ export const FilterSidebar = () => {
     searchParams.set('page', '1') // Resetear a la página 1 al cambiar el filtro
     searchParams.set('sizes', newSize.join(','))
     setSearchParams(searchParams)
+    if(newSize.length === 0) {
+      searchParams.delete('sizes')
+      setSearchParams(searchParams)
+      searchParams.set('page', '1')
+    }
   }
   const handlePriceChange = (price: string) => {
     searchParams.set('page', '1') // Resetear a la página 1 al cambiar el filtro
