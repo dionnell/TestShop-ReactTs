@@ -6,19 +6,25 @@ interface Options {
     limit? : number | string,
     offset? : number | string,
     sizes? : string | null,
-    gender? : string | null
+    gender? : string | null,
+    minPrice? : number | string,
+    maxPrice? : number | string,
+    query? : string,
 }
 
 export const getProductsAction = async(options: Options): Promise<ProductsResponse> => {
     
-    const {limit, offset, sizes, gender} = options
+    const {limit, offset, sizes, gender, minPrice, maxPrice, query} = options
 
     const {data} = await testShopApi.get<ProductsResponse>('/products', {
         params: {
             limit,
             offset,
             sizes, 
-            gender
+            gender,
+            minPrice,
+            maxPrice, 
+            q: query
         }
     }) 
 

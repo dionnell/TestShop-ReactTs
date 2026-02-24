@@ -47,7 +47,7 @@ export const ProductsGrid = ({products} : Props) => {
   }
 
   return (
-    <section className="py-12 px-4 lg:px-8">
+    <section className="py-10 px-4 lg:px-8">
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
