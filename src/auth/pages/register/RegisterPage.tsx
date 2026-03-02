@@ -3,14 +3,43 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
-import { Link } from "react-router"
+
+import { type SubmitEvent } from "react"
+import { Link, useNavigate } from "react-router"
+import { useAuthStore } from "@/auth/store/auth.store"
+import { toast } from "sonner"
 
 export const RegisterPage = () => {
+
+  const navigate = useNavigate()
+  const { register } = useAuthStore()
+
+
+  const handleRegister = async(e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.target as HTMLFormElement)
+    const fullName = formData.get('fullName') as string
+    const email = formData.get('email') as string
+    const password = formData.get('password') as string
+    
+    const isValid = await register(fullName, email, password)
+
+    if(isValid){
+      navigate('/')
+      return toast.success('Bienvenido a la aplicacion')
+    } else {
+      toast.error('Correo o Contraseña incorrectos')
+    }
+    
+
+  }
+  
   return (
     <div className={"flex flex-col gap-6"} >
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleRegister}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <CustomLogo />
@@ -19,7 +48,8 @@ export const RegisterPage = () => {
               <div className="grid gap-2">
                 <Label htmlFor="name">Nombre</Label>
                 <Input 
-                  id="name" 
+                  id="fullName" 
+                  name="fullName"
                   type="text" 
                   placeholder="Nombre completo" 
                   required 
@@ -29,6 +59,7 @@ export const RegisterPage = () => {
                 <Label htmlFor="email">Correo</Label>
                 <Input 
                   id="email" 
+                  name="email"
                   type="email" 
                   placeholder="example@google.com" 
                   required 
@@ -40,6 +71,7 @@ export const RegisterPage = () => {
                 </div>
                 <Input 
                   id="password" 
+                  name="password"
                   type="password" 
                   required 
                 />

@@ -2,15 +2,17 @@ import { testShopApi } from "@/api/testShopApi"
 import type { AuthResponse } from "../interfaces/auth.response"
 
 
-export const loginAction = async(
+export const registerAction = async(
+    fullName: string,
     email: string, 
-    password: string
+    password: string,
 ): Promise<AuthResponse> => {
 
     try {
-        const {data} = await testShopApi.post<AuthResponse>('/auth/login',{
+        const {data} = await testShopApi.post<AuthResponse>('/auth/register',{
+            fullName,
             email,
-            password
+            password,
         })
         return data
     } catch (error) {

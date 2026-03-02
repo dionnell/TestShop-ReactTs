@@ -5,11 +5,12 @@ import { Label } from "@/components/ui/label"
 import { CustomLogo } from "@/components/custom/CustomLogo"
 import { Link, useNavigate } from "react-router"
 import { useState, type SubmitEvent } from "react"
-import { loginAction } from "@/auth/action/login.action"
 import { toast } from "sonner"
+import { useAuthStore } from "@/auth/store/auth.store"
 
 export const LoginPage = () => {
   const navigate = useNavigate()
+  const { login } = useAuthStore()
   const [ isPosting, setIsPosting ] = useState(false)
 
   const handleLogin = async(e: SubmitEvent<HTMLFormElement>) => {
@@ -19,16 +20,16 @@ export const LoginPage = () => {
     const formData = new FormData(e.target as HTMLFormElement)
     const email = formData.get('email') as string
     const password = formData.get('password') as string
-
-    try {
-      const data = await loginAction(email, password)
-      localStorage.setItem('token', data.token)
-      navigate('/')
     
-    } catch (error) {
+    const isValid = await login(email, password)
+
+    if(isValid){
+      navigate('/')
+      return toast.success('Bienvenido a la aplicacion')
+    } else {
       toast.error('Correo o Contraseña incorrectos')
     }
-
+    
     setIsPosting(false)
   }
 
@@ -106,7 +107,7 @@ export const LoginPage = () => {
               </div>
               <div className="text-center text-sm">
                 no tienes una cuenta?{' '}
-                <Link to="/auth/register" className="underline underline-offset-4">
+                <Link to="/auth/register" className="underline underline-offset-4 font-bold">
                   Crear cuenta
                 </Link>
               </div>
