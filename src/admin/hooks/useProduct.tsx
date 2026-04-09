@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { getProductByIdAction } from "../action/getProductById.action"
 import type { Product } from "@/interface/product.interface"
+import { createUpdateProductAction } from "../action/create-update-product.action"
 
 
 export const useProduct = (id: string) => {
@@ -13,16 +14,19 @@ export const useProduct = (id: string) => {
   })
 
   //Manejar la mutacion
-  //const mutation = useMutation({})
+  const mutation = useMutation({
+    mutationFn: createUpdateProductAction,
+  })
+
 
 
   //Submit del formulario
-  const handleSubmitForm = async(productLike: Partial<Product>) => {
-    console.log({productLike})
-  }
+  //const handleSubmitForm = async(productLike: Partial<Product>) => {
+  //  console.log({productLike})
+  //}
 
   return {
     ...query,
-    handleSubmitForm
+    mutation,
   }
 }

@@ -1,26 +1,17 @@
-import { Navigate, useParams } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
 
 import { useProduct } from '@/admin/hooks/useProduct';
 import { CustomFullScreenLoading } from '@/components/custom/CustomFullScreenLoading';
 import { AdminProductForm } from './ui/AdminProductForm';
+import type { Product } from '@/interface/product.interface';
+import { toast } from 'sonner';
 
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  slug: string;
-  stock: number;
-  sizes: string[];
-  gender: string;
-  tags: string[];
-  images: string[];
-}
 
 export const AdminProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate()
 
-  const {isLoading, isError, data: product, handleSubmitForm} = useProduct(id || '')
+  const {isLoading, isError, data: product, mutation} = useProduct(id || '')
 
   const productTitle = id === 'new' ? 'Nuevo producto' : 'Editar producto';
   const productSubtitle =
@@ -28,6 +19,22 @@ export const AdminProductPage = () => {
       ? 'Aquí puedes crear un nuevo producto.'
       : 'Aquí puedes editar el producto.';
 
+  const handleSubmit = async(productLike: Partial<Product>) => {
+    await mutation.mutateAsync(productLike, {
+      onSuccess: (data) => {
+        toast.success('Producto actualizado correctamente',{
+          position: 'top-right'
+        })
+        navigate(`/admin/products/${data.id}`)
+      },
+      onError: (error) => {
+        console.log({error})
+        toast.error('Error al actualizar el producto',{
+          position: 'top-right'
+        })
+      }
+    });
+  }
   
   if(isError) {
     return <Navigate to='/admin/products' />
@@ -45,7 +52,8 @@ export const AdminProductPage = () => {
     title={productTitle}
     subTitle={productSubtitle}
     product={product}
-    onSubmit= {handleSubmitForm}
+    onSubmit= {handleSubmit}
+    isPosting={mutation.isPending}
   />
 
 };
