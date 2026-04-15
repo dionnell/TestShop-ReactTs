@@ -3,7 +3,7 @@ import type { Product, Size } from "@/interface/product.interface";
 import { X, Plus, Upload, Tag, SaveAll } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from 'react-hook-form'
 import { cn } from "@/lib/utils";
 
@@ -15,11 +15,14 @@ interface Props {
     isPosting: boolean
 
     //Methods
-    onSubmit: (productLike: Partial<Product>) => Promise<void>
+    onSubmit: (productLike: Partial<Product> & { files?: File[] }) => Promise<void>
 }
 
 const availableSizes: Size[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
+interface FormInputs extends Product {
+  files?: File[]
+}
 
 export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting }: Props) => {
 
@@ -30,11 +33,16 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
         getValues, 
         setValue,
         watch 
-      } = useForm({
+      } = useForm<FormInputs>({
     defaultValues: product
   })
 
   const labelInputRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([])
+
+  useEffect(() => {
+    setFiles([]) // Limpiar las nuevas imágenes seleccionadas al cambiar de producto
+  },[product])
 
   const selectedSizes = watch('sizes')
   const selectedTags = watch('tags')
@@ -88,12 +96,24 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
     e.stopPropagation();
     setDragActive(false);
     const files = e.dataTransfer.files;
-    console.log(files);
+
+    if(!files) return
+
+    setFiles(prev => [...prev, ...Array.from(files)])
+
+    const currentFiles = getValues('files') || []
+    setValue('files', [...currentFiles, ...Array.from(files)])
+
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
+
+    if(!files) return
+    setFiles(prev => [...prev, ...Array.from(files)])
+    const currentFiles = getValues('files') || []
+    setValue('files', [...currentFiles, ...Array.from(files)])
+
   };
 
 
@@ -111,7 +131,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
 
           <Button type='submit' disabled={isPosting}>
             <SaveAll className="w-4 h-4" />
-            Guardar cambios
+            {isPosting ? 'Guardando...' : 'Guardar cambios'}
           </Button>
         </div>
       </div>
@@ -430,6 +450,35 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
                   ))}
                 </div>
               </div>
+
+              {/* Previsualizacion de nuevas imagenes */}
+              {files.length > 0 &&
+                <div className="mt-6 space-y-3">
+                  <h3 className="text-sm font-medium text-slate-700">
+                    Previsualización de nuevas imágenes
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {files.map((file, index) => (
+                      <div key={index} className="relative group">
+                        <div className="aspect-square bg-slate-100 rounded-lg border border-slate-200 flex items-center justify-center">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt="Product"
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                        </div>
+                        <button className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                          <X className="h-3 w-3" />
+                        </button>
+                        <p className="mt-1 text-xs text-slate-600 truncate">
+                          {file.name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              }
+              
             </div>
 
             {/* Product Status */}

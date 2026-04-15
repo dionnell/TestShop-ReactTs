@@ -1,10 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getProductByIdAction } from "../action/getProductById.action"
-import type { Product } from "@/interface/product.interface"
 import { createUpdateProductAction } from "../action/create-update-product.action"
+import type { Product } from "@/interface/product.interface"
 
 
 export const useProduct = (id: string) => {
+
+  const queryClient = useQueryClient()
 
   const query = useQuery({
       queryKey: ['product', {id}],
@@ -16,14 +18,17 @@ export const useProduct = (id: string) => {
   //Manejar la mutacion
   const mutation = useMutation({
     mutationFn: createUpdateProductAction,
+    onSuccess: (product: Product) => {
+      //Invalidar el cache
+      queryClient.invalidateQueries({queryKey: ['products']})
+      queryClient.invalidateQueries({queryKey: ['product', {id: product.id}]})
+
+      //Actualizar el queryData
+      queryClient.setQueryData(['products', {id: product.id}], product)
+
+    }
   })
 
-
-
-  //Submit del formulario
-  //const handleSubmitForm = async(productLike: Partial<Product>) => {
-  //  console.log({productLike})
-  //}
 
   return {
     ...query,
