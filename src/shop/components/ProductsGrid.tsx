@@ -13,6 +13,7 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox"
+import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading"
 
 
 interface Props {
@@ -129,6 +130,9 @@ export const ProductsGrid = ({products} : Props) => {
             </div>
           )}
           {/* Products Grid */}
+          {
+              products.length === 0 && ( <CustomFullScreenLoading/>)
+          }
           <div className="flex-1">
             <div className={
               viewMode === 'grid' 

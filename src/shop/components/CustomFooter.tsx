@@ -29,8 +29,6 @@ export const CustomFooter = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#" className="hover:text-foreground">Contacto</a></li>
               <li><a href="#" className="hover:text-foreground">Envíos</a></li>
-              <li><a href="#" className="hover:text-foreground">Devoluciones</a></li>
-              <li><a href="#" className="hover:text-foreground">Guía de Tallas</a></li>
             </ul>
           </div>
           
@@ -39,8 +37,6 @@ export const CustomFooter = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#" className="hover:text-foreground">Sobre Nosotros</a></li>
               <li><a href="#" className="hover:text-foreground">Sustentabilidad</a></li>
-              <li><a href="#" className="hover:text-foreground">Carreras</a></li>
-              <li><a href="#" className="hover:text-foreground">Prensa</a></li>
             </ul>
           </div>
         </div>
