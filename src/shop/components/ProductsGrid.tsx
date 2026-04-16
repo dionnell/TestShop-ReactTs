@@ -21,10 +21,10 @@ interface Props {
 }
 
 const limitOptions = [
-  6,
   9,
   12,
-  24,
+  15,
+  21,
 ]
 
 export const ProductsGrid = ({products} : Props) => {
