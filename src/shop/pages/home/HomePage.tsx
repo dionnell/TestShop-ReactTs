@@ -5,7 +5,7 @@ import { useProducts } from "@/shop/hooks/useProducts"
 
 export const HomePage = () => {
 
-  const { data, isLoading } = useProducts()
+  const { data } = useProducts()
 
   return (
     <>
