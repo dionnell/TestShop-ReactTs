@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 export const ProductCard = ({ 
-    id, name, price, image, category , size
+    name, price, image, category , size
 }: ProductCardProps) => {
   return (
     <Card className="group border-0 shadow-none product-card-hover cursor-pointer">
