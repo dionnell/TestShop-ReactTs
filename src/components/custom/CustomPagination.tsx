@@ -18,6 +18,7 @@ export const CustomPagination = ({ totalPages }: Props) => {
     searchParams.set('page', page.toString());
 
     setSearchParams(searchParams);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
