@@ -39,8 +39,10 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 ## Alojamiento 
 
 La pagina se encuentra alojada en Netifly: [https://test-shop-react.netlify.app/](https://test-shop-react.netlify.app/)
+
 La base de datos Postgress se encuentra en [Neon Serverless](https://neon.com/)
-y el backend se encuentra en mi Github [TestShop-NestJs](https://github.com/dionnell/TestShop-NestJs) y se encuentra alojado en [render](https://render.com/)
+
+El backend se encuentra en mi Github [TestShop-NestJs](https://github.com/dionnell/TestShop-NestJs) y se encuentra alojado en [render](https://render.com/)
 
 
 ## Ejecución
