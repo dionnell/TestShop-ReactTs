@@ -16,7 +16,7 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
  
-  const SCROLL_AMOUNT = 228 * 2 // ~2 cards per click
+  const SCROLL_AMOUNT = 224 * 2 // ~2 cards per click
  
   const checkScroll = useCallback(() => {
     const el = trackRef.current
@@ -54,13 +54,13 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
  
       
       {/* Carousel */}
-      <div className="relative">
+      <div className="relative overflow-hidden mx-auto w-[90%] lg:w-[1184px]">
         <button 
             onClick={() => scroll("left")} 
             disabled={!canScrollLeft}
-            className={`absolute top-1/2 -translate-y-1/2 z-10 -left-4 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
+            className={`absolute top-1/2 -translate-y-1/2 z-50 -left-0.5 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
                         flex items-center justify-center transition-all duration-150
-                        ${canScrollLeft ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
+                        ${!canScrollLeft ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
                     `}
         >
             <ArrowLeftIcon />
@@ -70,7 +70,7 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
           className="flex gap-4 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {isLoading
-            ? Array.from({ length: 6 }).map((_, i) => <SkeletonCardLoading key={i} />)
+            ? Array.from({ length: 5 }).map((_, i) => <SkeletonCardLoading key={i} />)
             : products?.map((product) => (
                 <RelatedProductCard  
                     key={product.id} 
@@ -82,13 +82,12 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
                 />
               ))}
         </div>
- 
         <button 
             onClick={() => scroll("right")} 
             disabled={!canScrollRight}
-            className={`absolute top-1/2 -translate-y-1/2 z-10 -right-4 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
+            className={`absolute top-1/2 -translate-y-1/2 z-10 -right-0.5 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
                         flex items-center justify-center transition-all duration-150
-                        ${canScrollRight ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
+                        ${!canScrollRight ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
                     `}
         >
             <ArrowRightIcon />
