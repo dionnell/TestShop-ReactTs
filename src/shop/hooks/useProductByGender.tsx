@@ -11,7 +11,7 @@ export const useProductsByGender = (gender: string, currentSlug: string) => {
     enabled: !!gender,
     staleTime: 1000 * 60 * 5, // 5 minutos
     select: (products) =>
-      products.products.filter((p) => p.slug !== currentSlug).slice(0, 8),
+      products.products.filter((p) => p.slug !== currentSlug).slice(0, 12),
   })
 
   return {...query}

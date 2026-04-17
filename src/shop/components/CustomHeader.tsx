@@ -1,6 +1,7 @@
-import { Search } from "lucide-react";
+import { Search, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useRef, type KeyboardEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,7 @@ export const CustomHeader = () => {
 
   return <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-slate-50">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-16 items-center justify-start md:justify-between">
           {/* Logo */}
           <CustomLogo />
 
@@ -69,9 +70,33 @@ export const CustomHeader = () => {
               Niños
             </Link>
           </nav>
+          {/* Navigation - Mobile */} 
+          <div className="md:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
+                <DropdownMenuItem asChild>
+                  <Link to="/">Todos</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/gender/men">Hombres</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/gender/women">Mujeres</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/gender/kid">Niños</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
           {/* Search and Cart */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 ml-auto">
             <div className="hidden md:flex items-center space-x-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -91,38 +116,62 @@ export const CustomHeader = () => {
             
             {
               authStatus === 'not-authenticated' ? (
-                <Link to='/auth/login'>
+                <Link to='/auth/login' >
                   <Button 
                     variant="default" 
                     size="sm" 
-                    className="ml-2">
+                    className="ml-2 mr-2">
                       Login
                   </Button>
                 </Link>
               ) : (
-                <Button 
-                  variant='outline' 
-                  size="sm" 
-                  className="ml-2"
-                  onClick={logout}
-                >
-                    Cerrar Sesion
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon" className="rounded-2xl border-2 mx-2">
+                      <User className="h-10 w-10" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
+                    <DropdownMenuItem asChild>
+                      <Link to="/">Perfil</Link>
+                    </DropdownMenuItem>
+                    <hr className="border-gray-200 my-0.5" />
+                    {
+                      isAdmin() && (
+                        <DropdownMenuItem asChild >
+                          <Link to='/admin' >
+                                Admin
+                          </Link>
+                        </DropdownMenuItem>
+                      )
+                    }
+                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuItem asChild>
+                      <Link to="/gender/men">Favoritos</Link>
+                    </DropdownMenuItem>
+                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuItem asChild>
+                      <Link to="/gender/women">Carrito de Compras</Link>
+                    </DropdownMenuItem>
+                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuItem 
+                      asChild 
+                      variant='destructive'
+                      color='black'
+                    >
+                      <span 
+                        onClick={logout}
+                      >
+                          Cerrar Sesion
+                      </span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                
               )
             }
             
-            {
-              isAdmin() && (
-                <Link to='/admin'>
-                  <Button 
-                    variant="destructive" 
-                    size="sm" 
-                    className="ml-2">
-                      Admin
-                  </Button>
-                </Link>
-              )
-            }
+            
             
           </div>
         </div>

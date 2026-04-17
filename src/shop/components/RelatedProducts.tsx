@@ -15,8 +15,9 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
   const trackRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1024)
  
-  const SCROLL_AMOUNT = 224 * 2 // ~2 cards per click
+  const SCROLL_AMOUNT = isSmallScreen ? 250 : 224 * 2 // 1 card for small screens, 2 for lg+
  
   const checkScroll = useCallback(() => {
     const el = trackRef.current
@@ -32,6 +33,14 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
     el.addEventListener("scroll", checkScroll, { passive: true })
     return () => el.removeEventListener("scroll", checkScroll)
   }, [checkScroll, products])
+ 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 1024)
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
  
   const scroll = (dir: "left" | "right") => {
     trackRef.current?.scrollBy({
@@ -58,7 +67,7 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
         <button 
             onClick={() => scroll("left")} 
             disabled={!canScrollLeft}
-            className={`absolute top-1/2 -translate-y-1/2 z-50 -left-0.5 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
+            className={`absolute top-1/2 -translate-y-1/2 z-50 -left-0.5 ml-1 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
                         flex items-center justify-center transition-all duration-150
                         ${!canScrollLeft ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
                     `}
@@ -85,7 +94,7 @@ export const RelatedProducts = ({ gender, currentSlug }: Props) => {
         <button 
             onClick={() => scroll("right")} 
             disabled={!canScrollRight}
-            className={`absolute top-1/2 -translate-y-1/2 z-10 -right-0.5 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
+            className={`absolute top-1/2 -translate-y-1/2 z-10 -right-0.5 mr-1 w-9 h-9 rounded-full bg-white border border-gray-200 shadow-md
                         flex items-center justify-center transition-all duration-150
                         ${!canScrollRight ? "opacity-0 pointer-events-none" : "hover:bg-gray-50 hover:shadow-lg"}
                     `}

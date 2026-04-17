@@ -113,13 +113,13 @@ export const ProductsGrid = ({products} : Props) => {
           <div className="hidden lg:block">
             <FilterSidebar />
           </div>
-          {/* Mobile Filters */}
+          {/* Mobile Filters */} 
           {showFilters && (
             <div className="fixed inset-0 z-50 bg-background p-4 lg:hidden">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold">Filtros</h3>
+              <div className="flex items-center justify-end mb-1 ">
                 <Button 
                   variant="ghost" 
+                  className="border-2 rounded-2xl p-3 translate-y-2"
                   size="sm"
                   onClick={() => setShowFilters(false)}
                 >
@@ -136,7 +136,7 @@ export const ProductsGrid = ({products} : Props) => {
           <div className="flex-1">
             <div className={
               viewMode === 'grid' 
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" 
+                ? "grid grid-cols-2 lg:grid-cols-4 gap-6" 
                 : "space-y-4"
             }>
               {products.map((product) => (

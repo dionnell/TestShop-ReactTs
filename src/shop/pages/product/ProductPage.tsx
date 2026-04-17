@@ -15,8 +15,9 @@ export const ProductPage = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
 
-
+ 
   if (isLoading) return <CustomFullScreenLoading />;
+  if(!isLoading) {window.scrollTo({ top: 0, behavior: 'smooth' })}
  
   if (isError || !product) {
     return (
