@@ -171,8 +171,6 @@ export const CustomHeader = () => {
               )
             }
             
-            
-            
           </div>
         </div>
       </div>
