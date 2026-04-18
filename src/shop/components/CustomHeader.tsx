@@ -35,9 +35,35 @@ export const CustomHeader = () => {
 
   return <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-slate-50">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-start md:justify-between">
+        <div className="flex h-16 items-center">
           {/* Logo */}
-          <CustomLogo />
+          <div className="flex-1 flex justify-start">
+            <CustomLogo />
+            {/* Navigation - Mobile */} 
+            <div className="md:hidden ml-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
+                  <DropdownMenuItem asChild>
+                    <Link to="/">Todos</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/gender/men">Hombres</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/gender/women">Mujeres</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/gender/kid">Niños</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
 
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -70,33 +96,10 @@ export const CustomHeader = () => {
               Niños
             </Link>
           </nav>
-          {/* Navigation - Mobile */} 
-          <div className="md:hidden">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
-                <DropdownMenuItem asChild>
-                  <Link to="/">Todos</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/gender/men">Hombres</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/gender/women">Mujeres</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/gender/kid">Niños</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
 
           {/* Search and Cart */}
-          <div className="flex items-center space-x-4 ml-auto">
+          <div className="flex-1 flex justify-end">
+            <div className="flex items-center space-x-4">
             <div className="hidden md:flex items-center space-x-2">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -171,6 +174,7 @@ export const CustomHeader = () => {
               )
             }
             
+          </div>
           </div>
         </div>
       </div>

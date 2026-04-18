@@ -78,7 +78,7 @@ export const ProductPage = () => {
             </div>
  
             {/* Main Image */}
-            <div className="flex-1 relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
+            <div className="flex-1 relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-md">
               <img
                 src={product.images[selectedImage]}
                 alt={product.title}
@@ -148,7 +148,7 @@ export const ProductPage = () => {
                   {quantity}
                 </span>
                 <button
-                  onClick={() => setQuantity((q) => q + 1)}
+                  onClick={() => setQuantity((q) => Math.min(product.stock || Infinity, q + 1))}
                   className="w-10 h-11 text-lg font-medium text-gray-600 hover:bg-gray-100 transition"
                 >
                   +
