@@ -150,7 +150,7 @@ export const CustomHeader = () => {
                     }
                     <hr className="border-gray-200 my-0.5" />
                     <DropdownMenuItem asChild>
-                      <Link to="/gender/men">Favoritos</Link>
+                      <Link to="/profile/favorites">Favoritos</Link>
                     </DropdownMenuItem>
                     <hr className="border-gray-200 my-0.5" />
                     <DropdownMenuItem asChild>
