@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import { ShoppingCartIcon, Heart } from "lucide-react";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
 import { useAuthStore } from "@/auth/store/auth.store";
+import { addFavorite } from "@/shop/actions/addFavorite.action";
 
 
 export const ProductPage = () => {
@@ -17,6 +18,9 @@ export const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+  
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false);
 
  
   if (isLoading) return <CustomFullScreenLoading />;
@@ -30,9 +34,20 @@ export const ProductPage = () => {
     );
   }
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if(!user){
       navigate('/auth/login')
+      return
+    }
+
+    try {
+      setIsLoadingFavorite(true)
+      await addFavorite(product.id)
+      setIsFavorite(true)
+    } catch (error) {
+      console.error('Error adding favorite:', error)
+    } finally {
+      setIsLoadingFavorite(false)
     }
   }
 
@@ -178,10 +193,15 @@ export const ProductPage = () => {
               </button>
 
               <button 
-                className="h-11 w-10 flex items-center justify-center bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer"
+                className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
+                  isFavorite 
+                    ? 'bg-red-500 text-white hover:bg-red-600' 
+                    : 'bg-black text-white hover:bg-gray-800'
+                } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={handleFavorite}
+                disabled={isLoadingFavorite}
               >
-                <Heart /> 
+                <Heart fill={isFavorite ? 'currentColor' : 'none'} /> 
               </button> 
             </div>
               
