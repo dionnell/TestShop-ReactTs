@@ -1,14 +1,17 @@
 import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading";
 import { useProductShop } from "@/shop/hooks/useProductShop"
 import { useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { ShoppingCartIcon, Heart } from "lucide-react";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
+import { useAuthStore } from "@/auth/store/auth.store";
 
 
 export const ProductPage = () => {
 
   const {idSlug} = useParams();
+  const { user } = useAuthStore()
+  const navigate = useNavigate()
 
   const {data: product, isLoading, isError} = useProductShop(idSlug || '')
   const [selectedImage, setSelectedImage] = useState(0);
@@ -25,6 +28,18 @@ export const ProductPage = () => {
         <p className="text-gray-500 text-lg">Producto no encontrado.</p>
       </div>
     );
+  }
+
+  const handleFavorite = () => {
+    if(!user){
+      navigate('/auth/login')
+    }
+  }
+
+  const handleCart = () => {
+    if(!user){
+      navigate('/auth/login')
+    }
   }
 
   return (
@@ -154,16 +169,22 @@ export const ProductPage = () => {
                   +
                 </button>
               </div>
-
-              <button className="h-11 w-10 flex items-center justify-center bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer">
-                <Heart /> 
-              </button>
  
-              <button className="flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer">
+              <button 
+                className="flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer"
+                onClick={handleCart}  
+              >
                 <ShoppingCartIcon className="mr-2"/> Agregar al carro
               </button>
+
+              <button 
+                className="h-11 w-10 flex items-center justify-center bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer"
+                onClick={handleFavorite}
+              >
+                <Heart /> 
+              </button> 
             </div>
- 
+              
  
             {/* Divider */}
             <hr className="border-gray-200 my-1" />
