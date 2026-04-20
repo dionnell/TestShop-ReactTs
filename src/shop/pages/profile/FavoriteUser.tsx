@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { getFavorites, type FavoriteItem } from "@/shop/actions/getFavorites.action";
 import { removeFavorite } from "@/shop/actions/removeFavorite.action";
+import { Link } from "react-router";
 
 export const FavoriteUser = () => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
@@ -39,7 +40,7 @@ export const FavoriteUser = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 bg-gray-100 mt-4 rounded-lg">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6">Productos favoritos</h1>
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6 md:text-xl">Productos favoritos ({favorites.length})</h1>
 
       {isLoading ? (
         <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-gray-600">
@@ -82,13 +83,15 @@ export const FavoriteUser = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 align-top">
-                    <p className="font-semibold text-gray-900 line-clamp-2 md:text-sm ">{favorite.product.title}</p>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3">
-                      {favorite.product.description}
-                    </p>
-                    <span className="inline-block bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mt-2">
-                      ${favorite.product.price?.toLocaleString("es-CL")}
-                    </span>
+                    <Link to={`/product/${favorite.product.slug}`} >
+                      <p className="font-semibold text-gray-900 line-clamp-2 md:text-sm ">{favorite.product.title}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3">
+                        {favorite.product.description}
+                      </p>
+                      <span className="inline-block bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mt-2">
+                        ${favorite.product.price?.toLocaleString("es-CL")}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-6 py-4 align-top text-right">
                     <button

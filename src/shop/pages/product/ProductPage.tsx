@@ -1,37 +1,40 @@
 import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading";
-import { useProductShop } from "@/shop/hooks/useProductShop"
-import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
 import { ShoppingCartIcon, Heart, HeartOff } from "lucide-react";
-import { RelatedProducts } from "@/shop/components/RelatedProducts";
+
+import { useProductShop } from "@/shop/hooks/useProductShop"
+import { useFavorite } from "@/shop/hooks/useFavorite";
 import { useAuthStore } from "@/auth/store/auth.store";
+
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+import { RelatedProducts } from "@/shop/components/RelatedProducts";
 import { addFavorite } from "@/shop/actions/addFavorite.action";
 import { removeFavorite } from "@/shop/actions/removeFavorite.action";
-import { useFavorite } from "@/shop/hooks/useFavorite";
 
 
 export const ProductPage = () => {
+  const { idSlug } = useParams();
+  const { user } = useAuthStore();
+  const navigate = useNavigate();
 
-  const {idSlug} = useParams();
-  const { user } = useAuthStore()
-  const navigate = useNavigate()
-
-  const {data: product, isLoading, isError} = useProductShop(idSlug || '')
+  const { data: product, isLoading, isError } = useProductShop(idSlug || '');
+  
+  const { data: isFavoriteServer } = useFavorite(product?.id ?? '');
+  
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-
-  const { data } = useFavorite(product?.id || '')
-
   const [isLoadingFavorite, setIsLoadingFavorite] = useState(false);
 
-  console.log(data)
-  const isFavorite = !!data && (data.count ?? data.favorites.length) > 0;
+  const [isFavorite, setIsFavorite] = useState(false)
 
- 
+  useEffect(() => {
+    if (isFavoriteServer !== undefined) {
+      setIsFavorite(isFavoriteServer);
+    }
+  }, [isFavoriteServer]);
+
   if (isLoading) return <CustomFullScreenLoading />;
-  if(!isLoading) {window.scrollTo({ top: 0, behavior: 'smooth' })}
- 
   if (isError || !product) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -47,10 +50,15 @@ export const ProductPage = () => {
     }
 
     try {
-      setIsLoadingFavorite(true)
-      await addFavorite(product.id)
-    } catch (error) {
-      console.error('Error adding favorite:', error)
+      setIsLoadingFavorite(true);
+      await addFavorite(product.id);
+      setIsFavorite(true); // 👈 actualiza el ícono inmediatamente
+    } catch (error: any) {
+      if (error?.response?.status === 409) {
+        setIsFavorite(true); // ya existía, igual marca como favorito
+        return;
+      }
+      console.error(error);
     } finally {
       setIsLoadingFavorite(false)
     }
@@ -62,10 +70,13 @@ export const ProductPage = () => {
       return
     }
     try {
-      setIsLoadingFavorite(true)
-      await removeFavorite(productId)
+      setIsLoadingFavorite(true);
+      await removeFavorite(productId);
+      setIsFavorite(false); // 👈 actualiza el ícono inmediatamente
+    } catch (error: any) {
+      console.error(error);
     } finally {
-      setIsLoadingFavorite(false)
+      setIsLoadingFavorite(false);
     }
   }
 
