@@ -1,5 +1,4 @@
-import { RouterProvider } from "react-router"
-import { appRouter } from "./app.router"
+import { AppRouter } from "./app.router"
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { Toaster } from 'sonner'
@@ -31,7 +30,7 @@ export const TestShopApp = () => {
     <QueryClientProvider client={queryClient}>
       <Toaster/>
       <CheckAuthProvider>
-        <RouterProvider router={appRouter} /> 
+        <AppRouter />
       </CheckAuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

@@ -38,7 +38,7 @@ export const FavoriteUser = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 bg-gray-300">
+    <div className="max-w-6xl mx-auto px-4 py-6 bg-gray-100 mt-4 rounded-lg">
       <h1 className="text-2xl font-semibold text-gray-900 mb-6">Productos favoritos</h1>
 
       {isLoading ? (
@@ -82,10 +82,13 @@ export const FavoriteUser = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 align-top">
-                    <p className="font-semibold text-gray-900">{favorite.product.title}</p>
+                    <p className="font-semibold text-gray-900 line-clamp-2 md:text-sm ">{favorite.product.title}</p>
                     <p className="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3">
                       {favorite.product.description}
                     </p>
+                    <span className="inline-block bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mt-2">
+                      ${favorite.product.price?.toLocaleString("es-CL")}
+                    </span>
                   </td>
                   <td className="px-6 py-4 align-top text-right">
                     <button

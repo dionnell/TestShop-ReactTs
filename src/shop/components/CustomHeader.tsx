@@ -1,7 +1,13 @@
 import { Search, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRef, type KeyboardEvent } from "react";
 import { Link, useParams, useSearchParams } from "react-router";
 import { cn } from "@/lib/utils";
@@ -138,25 +144,25 @@ export const CustomHeader = () => {
                     <DropdownMenuItem asChild>
                       <Link to="/">Perfil</Link>
                     </DropdownMenuItem>
-                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuSeparator />
                     {
                       isAdmin() && (
-                        <DropdownMenuItem asChild >
-                          <Link to='/admin' >
-                                Admin
-                          </Link>
-                        </DropdownMenuItem>
+                        <>
+                          <DropdownMenuItem asChild>
+                            <Link to='/admin'>Admin</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                        </>
                       )
                     }
-                    <hr className="border-gray-200 my-0.5" />
                     <DropdownMenuItem asChild>
                       <Link to="/profile/favorites">Favoritos</Link>
                     </DropdownMenuItem>
-                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/gender/women">Carrito de Compras</Link>
                     </DropdownMenuItem>
-                    <hr className="border-gray-200 my-0.5" />
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       asChild 
                       variant='destructive'

@@ -2,10 +2,12 @@ import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoa
 import { useProductShop } from "@/shop/hooks/useProductShop"
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { ShoppingCartIcon, Heart } from "lucide-react";
+import { ShoppingCartIcon, Heart, HeartOff } from "lucide-react";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
 import { useAuthStore } from "@/auth/store/auth.store";
 import { addFavorite } from "@/shop/actions/addFavorite.action";
+import { removeFavorite } from "@/shop/actions/removeFavorite.action";
+import { useFavorite } from "@/shop/hooks/useFavorite";
 
 
 export const ProductPage = () => {
@@ -18,9 +20,13 @@ export const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  
-  const [isFavorite, setIsFavorite] = useState(false);
+
+  const { data } = useFavorite(product?.id || '')
+
   const [isLoadingFavorite, setIsLoadingFavorite] = useState(false);
+
+  console.log(data)
+  const isFavorite = !!data && (data.count ?? data.favorites.length) > 0;
 
  
   if (isLoading) return <CustomFullScreenLoading />;
@@ -34,7 +40,7 @@ export const ProductPage = () => {
     );
   }
 
-  const handleFavorite = async () => {
+  const handleAddFavorite = async () => {
     if(!user){
       navigate('/auth/login')
       return
@@ -43,9 +49,21 @@ export const ProductPage = () => {
     try {
       setIsLoadingFavorite(true)
       await addFavorite(product.id)
-      setIsFavorite(true)
     } catch (error) {
       console.error('Error adding favorite:', error)
+    } finally {
+      setIsLoadingFavorite(false)
+    }
+  }
+
+  const handleDeleteFavorite = async (productId: string) => {
+    if(!user){
+      navigate('/auth/login')
+      return
+    }
+    try {
+      setIsLoadingFavorite(true)
+      await removeFavorite(productId)
     } finally {
       setIsLoadingFavorite(false)
     }
@@ -192,17 +210,22 @@ export const ProductPage = () => {
                 <ShoppingCartIcon className="mr-2"/> Agregar al carro
               </button>
 
-              <button 
-                className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
+                <button 
+                  className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
                   isFavorite 
                     ? 'bg-red-500 text-white hover:bg-red-600' 
                     : 'bg-black text-white hover:bg-gray-800'
-                } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={handleFavorite}
-                disabled={isLoadingFavorite}
-              >
-                <Heart fill={isFavorite ? 'currentColor' : 'none'} /> 
-              </button> 
+                  } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={!isFavorite ? handleAddFavorite : () => handleDeleteFavorite(product.id)}
+                  disabled={isLoadingFavorite}
+                >
+                  {!isFavorite ? (
+                    <Heart  />
+                    ):
+                    <HeartOff fill="currentColor" /> 
+                  }
+                </button> 
+              
             </div>
               
  

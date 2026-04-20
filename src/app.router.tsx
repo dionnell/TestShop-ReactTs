@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { createHashRouter, Navigate } from "react-router";
+import { createHashRouter, Navigate, RouterProvider } from "react-router";
 
 import { ShopLayout } from "./shop/layouts/ShopLayout";
 import { HomePage } from "./shop/pages/home/HomePage";
@@ -13,15 +13,14 @@ import { DashboardPage } from "./admin/pages/dashboard/DashboardPage";
 import { AdminProductsPage } from "./admin/pages/products/AdminProductsPage";
 import { AdminProductPage } from "./admin/pages/product/AdminProductPage";
 
-import { AdminRoute, NotAuthenticatedRoute } from "./components/routes/ProtectedRoutes";
+import { AdminRoute, NotAuthenticatedRoute, AuthenticatedRoute } from "./components/routes/ProtectedRoutes";
 import { FavoriteUser } from "./shop/pages/profile/FavoriteUser";
 import { ProfileUser } from "./shop/pages/profile/ProfileUser";
 
 const AuthLayout = lazy(() => import('./auth/layouts/AuthLayout'))
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'))
 
-//export const appRouter = createBrowserRouter([
-export const appRouter = createHashRouter([
+const appRouter = createHashRouter([
     //Public routes
     {
         path: '/',
@@ -85,15 +84,13 @@ export const appRouter = createHashRouter([
             }
         ]
     },
-    {
-        path: '*',
-        element: <Navigate to='/' />
-    },
 
     //User profile routes
     {
         path: '/profile',
-        element: <ShopLayout/>,
+        element: <AuthenticatedRoute>
+                    <ShopLayout/>
+                </AuthenticatedRoute>,
         children: [
             {
                 index: true,
@@ -108,5 +105,14 @@ export const appRouter = createHashRouter([
                 element: <FavoriteUser/>
             },
         ]
-    }
+    },
+    
+    {
+        path: '*',
+        element: <Navigate to='/' />
+    },
 ])
+
+export function AppRouter() {
+  return <RouterProvider router={appRouter} />
+}
