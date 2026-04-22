@@ -3,13 +3,17 @@ import type { Product } from "@/interface/product.interface";
 
 export interface CartItem {
   id: string;
+  size: string;
+  quantity: number;
   createdAt: string;
+  subtotal: number;
   product: Product;
 }
 
 export interface GetCartResponse {
   count: number;
-  cart: CartItem[];
+  total: number;
+  items: CartItem[];
 }
 
 export const getCart = async (): Promise<GetCartResponse> => {
@@ -17,14 +21,16 @@ export const getCart = async (): Promise<GetCartResponse> => {
 
   return {
     ...data,
-    cart: data.cart.map((item) => ({
+    items: data.items.map((item) => ({
       ...item,
       product: {
         ...item.product,
         images: item.product.images?.map((image) =>
-          image.includes("http")
-            ? image
-            : `${import.meta.env.VITE_API_URL}/files/product/${image}`
+          typeof image === "string"
+            ? image.includes("http")
+              ? image
+              : `${import.meta.env.VITE_API_URL}/files/product/${image}`
+            : `${import.meta.env.VITE_API_URL}/files/product/${(image as any).url}`
         ) ?? [],
       },
     })),

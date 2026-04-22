@@ -1,4 +1,4 @@
-import { Search, Menu, User } from "lucide-react";
+import { Search, Menu, User, ShieldUser, Heart, ShoppingCart, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -42,11 +42,9 @@ export const CustomHeader = () => {
   return <header className="sticky top-0 z-50 w-full border-b backdrop-blur bg-slate-50">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center">
-          {/* Logo */}
           <div className="flex-1 flex justify-start">
-            <CustomLogo />
             {/* Navigation - Mobile */} 
-            <div className="md:hidden ml-4">
+            <div className="md:hidden mr-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="icon">
@@ -69,6 +67,8 @@ export const CustomHeader = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+            {/* Logo */}
+            <CustomLogo />
           </div>
 
           {/* Navigation - Desktop */}
@@ -106,7 +106,7 @@ export const CustomHeader = () => {
           {/* Search and Cart */}
           <div className="flex-1 flex justify-end">
             <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-2 ml-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input 
@@ -119,10 +119,6 @@ export const CustomHeader = () => {
               </div>
             </div>
             
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Search className="h-5 w-5" />
-            </Button>
-            
             {
               authStatus === 'not-authenticated' ? (
                 <Link to='/auth/login' >
@@ -130,7 +126,7 @@ export const CustomHeader = () => {
                     variant="default" 
                     size="sm" 
                     className="ml-2 mr-2">
-                      Login
+                      <LogIn/> Login
                   </Button>
                 </Link>
               ) : (
@@ -142,25 +138,25 @@ export const CustomHeader = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
                     <DropdownMenuItem asChild>
-                      <Link to="/profile/user">Perfil</Link>
+                      <Link to="/profile/user"><User /> Perfil</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     {
                       isAdmin() && (
                         <>
                           <DropdownMenuItem asChild>
-                            <Link to='/admin'>Admin</Link>
+                            <Link to='/admin'><ShieldUser/> Admin</Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                         </>
                       )
                     }
                     <DropdownMenuItem asChild>
-                      <Link to="/profile/favorites">Favoritos</Link>
+                      <Link to="/profile/favorites"><Heart/> Favoritos</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/profile/cart">Carrito de Compras</Link>
+                      <Link to="/profile/cart"><ShoppingCart/> Carrito de Compras</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
@@ -171,7 +167,7 @@ export const CustomHeader = () => {
                       <span 
                         onClick={logout}
                       >
-                          Cerrar Sesion
+                          <LogOut/> Cerrar Sesion
                       </span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -183,6 +179,21 @@ export const CustomHeader = () => {
           </div>
           </div>
         </div>
+
+        {/* Mobile Search */}
+        <div className="flex md:hidden items-center space-x-2 mb-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input 
+              ref={inputRef}
+              placeholder="Buscar productos..." 
+              className="pl-9 w-max h-9 bg-white" 
+              onKeyDown={handleSearch}
+              defaultValue={query}
+            />
+          </div>
+        </div>
+
       </div>
     </header>
 };
