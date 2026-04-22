@@ -116,7 +116,8 @@ export const CartUser = () => {
               return (
                 <div
                   key={item.id}
-                  className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}`}
+                  className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}
+                             max-sm:flex-1 max-sm:flex-col max-sm:items-center`}
                 >
                   {/* Image */}
                   <Link

@@ -24,7 +24,8 @@ export const CustomHeader = () => {
   const query = searchParams.get('query') || ''
 
   const handleSearch = (event: KeyboardEvent<HTMLInputElement>) => {
-    if(event.key !== 'Enter') return
+    if(event.key !== 'Enter' ) return
+
     const query = inputRef.current?.value
 
     const newSearchParams = new URLSearchParams()
@@ -32,7 +33,7 @@ export const CustomHeader = () => {
     if(!query){ 
       newSearchParams.delete('query')
     } else {
-    newSearchParams.set('query', inputRef.current!.value || '')
+      newSearchParams.set('query', inputRef.current!.value || '')
     }
 
     setSearchParams(newSearchParams)
@@ -51,7 +52,7 @@ export const CustomHeader = () => {
                     <Menu className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
+                <DropdownMenuContent className="font-montserrat font-bold text-xl ml-4 whitespace-nowrap">
                   <DropdownMenuItem asChild>
                     <Link to="/">Todos</Link>
                   </DropdownMenuItem>
