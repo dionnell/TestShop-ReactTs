@@ -16,6 +16,7 @@ import { AdminProductPage } from "./admin/pages/product/AdminProductPage";
 import { AdminRoute, NotAuthenticatedRoute, AuthenticatedRoute } from "./components/routes/ProtectedRoutes";
 import { FavoriteUser } from "./shop/pages/profile/FavoriteUser";
 import { ProfileUser } from "./shop/pages/profile/ProfileUser";
+import { CartUser } from "./shop/pages/profile/CartUser";
 
 const AuthLayout = lazy(() => import('./auth/layouts/AuthLayout'))
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'))
@@ -104,6 +105,10 @@ const appRouter = createHashRouter([
                 path: 'favorites',
                 element: <FavoriteUser/>
             },
+            {
+                path: 'cart',
+                element: <CartUser/>
+            }
         ]
     },
     

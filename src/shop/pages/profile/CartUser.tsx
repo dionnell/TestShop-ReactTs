@@ -1,57 +1,27 @@
-import { useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
-import { getFavorites, type FavoriteItem } from "@/shop/actions/getFavorites.action";
-import { removeFavorite } from "@/shop/actions/removeFavorite.action";
-import { Link } from "react-router";
+import { useCart } from "@/shop/hooks/useCart"
+import { Trash2 } from "lucide-react"
+import { Link } from "react-router"
 
-export const FavoriteUser = () => {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [removingId, setRemovingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadFavorites = async () => {
-      try {
-        const { favorites } = await getFavorites();
-        setFavorites(favorites);
-      } catch (err) {
-        setError("No se pudieron cargar los favoritos. Intenta de nuevo más tarde.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+export const CartUser = () => {
 
-    loadFavorites();
-  }, []);
-
-  const handleRemove = async (productId: string) => {
-    setRemovingId(productId);
-    try {
-      await removeFavorite(productId);
-      setFavorites((current) => current.filter((item) => item.product.id !== productId));
-    } catch (err) {
-      setError("No se pudo eliminar el producto. Vuelve a intentarlo.");
-    } finally {
-      setRemovingId(null);
-    }
-  };
-
+  const {isLoading, isError, error, data: product} = useCart()
+  
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 bg-gray-100 mt-4 rounded-lg">
-      <h1 className="text-2xl font-semibold text-gray-900 mb-6 md:text-xl">Productos favoritos ({favorites.length})</h1>
+      <h1 className="text-2xl font-semibold text-gray-900 mb-6 md:text-xl">Carrito de Compras ({product?.cart.length ?? 0})</h1>
 
       {isLoading ? (
         <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-gray-600">
-          Cargando favoritos...
+          Cargando Carrito de Compras...
         </div>
-      ) : error ? (
+      ) : isError ? (
         <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-700">
-          {error}
+          {error instanceof Error ? error.message : "No se pudieron cargar los productos del carrito. Intenta de nuevo más tarde."}
         </div>
-      ) : favorites.length === 0 ? (
+      ) : product?.cart.length === 0 ? (
         <div className="rounded-lg border border-gray-200 bg-white p-8 text-center text-gray-600">
-          No tienes productos favoritos aún.
+          No tienes productos en el carrito aún.
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white shadow-sm">
@@ -70,33 +40,32 @@ export const FavoriteUser = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {favorites.map((favorite) => (
-                <tr key={favorite.id}>
+              {product?.map((cart) => (
+                <tr key={cart.id}>
                   <td className="px-6 py-4 align-top">
                     <div className="h-24 w-24 overflow-hidden rounded-xl bg-gray-100">
                       <img
-                        src={favorite.product.images?.[0] ?? "https://via.placeholder.com/150"}
-                        alt={favorite.product.title}
+                        src={cart.product.images?.[0] ?? "https://via.placeholder.com/150"}
+                        alt={cart.product.title}
                         className="h-full w-full object-cover"
                       />
                     </div>
                   </td>
                   <td className="px-6 py-4 align-top">
-                    <Link to={`/product/${favorite.product.slug}`} >
-                      <p className="font-semibold text-gray-900 line-clamp-2 max-md:text-xs ">{favorite.product.title}</p>
+                    <Link to={`/product/${cart.product.slug}`} >
+                      <p className="font-semibold text-gray-900 line-clamp-2 max-md:text-xs ">{cart.product.title}</p>
                       <p className="mt-2 text-sm leading-relaxed text-gray-600 line-clamp-3 max-md:text-xs">
-                        {favorite.product.description}
+                        {cart.product.description}
                       </p>
                       <span className="inline-block bg-gray-200 text-gray-800 text-xs font-medium px-2 py-1 rounded-full mt-2">
-                        ${favorite.product.price?.toLocaleString("es-CL")}
+                        ${cart.product.price?.toLocaleString("es-CL")}
                       </span>
                     </Link>
                   </td>
                   <td className="px-6 py-4 align-top text-right">
                     <button
                       type="button"
-                      onClick={() => handleRemove(favorite.product.id)}
-                      disabled={removingId === favorite.product.id}
+                      
                       className="inline-flex items-center rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -109,5 +78,5 @@ export const FavoriteUser = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}

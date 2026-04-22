@@ -142,7 +142,7 @@ export const CustomHeader = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="font-montserrat font-bold text-xl m-0 whitespace-nowrap">
                     <DropdownMenuItem asChild>
-                      <Link to="/">Perfil</Link>
+                      <Link to="/profile/user">Perfil</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     {
@@ -160,7 +160,7 @@ export const CustomHeader = () => {
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/gender/women">Carrito de Compras</Link>
+                      <Link to="/profile/cart">Carrito de Compras</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 

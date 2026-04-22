@@ -1,5 +1,6 @@
 import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading";
 import { ShoppingCartIcon, Heart, HeartOff } from "lucide-react";
+import { toast } from 'sonner'
 
 import { useProductShop } from "@/shop/hooks/useProductShop"
 import { useFavorite } from "@/shop/hooks/useFavorite";
@@ -10,6 +11,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
 import { addFavorite } from "@/shop/actions/addFavorite.action";
 import { removeFavorite } from "@/shop/actions/removeFavorite.action";
+import { addToCart } from "@/shop/actions/addToCart.action";
 
 
 export const ProductPage = () => {
@@ -23,9 +25,8 @@ export const ProductPage = () => {
   
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState(1);
   const [isLoadingFavorite, setIsLoadingFavorite] = useState(false);
-
+  const [isLoadingCart, setIsLoadingCart] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
@@ -52,10 +53,14 @@ export const ProductPage = () => {
     try {
       setIsLoadingFavorite(true);
       await addFavorite(product.id);
-      setIsFavorite(true); // 👈 actualiza el ícono inmediatamente
+      setIsFavorite(true); 
+      toast.success('Producto agregado a favoritos',{
+          position: 'top-right',
+          richColors: true
+      })
     } catch (error: any) {
       if (error?.response?.status === 409) {
-        setIsFavorite(true); // ya existía, igual marca como favorito
+        setIsFavorite(true); 
         return;
       }
       console.error(error);
@@ -72,7 +77,11 @@ export const ProductPage = () => {
     try {
       setIsLoadingFavorite(true);
       await removeFavorite(productId);
-      setIsFavorite(false); // 👈 actualiza el ícono inmediatamente
+      setIsFavorite(false);
+      toast.success('Producto eliminado de favoritos',{
+          position: 'top-right',
+          richColors: true
+      })
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -80,9 +89,29 @@ export const ProductPage = () => {
     }
   }
 
-  const handleCart = () => {
+  const handleAddToCart = async(productId: string, size: string) => {
     if(!user){
       navigate('/auth/login')
+    }
+
+    if(selectedSize === null ){
+      toast.error('Seleccionar una talla',{
+        position: 'top-right',
+        richColors: true
+      })
+    }
+
+    try {
+      setIsLoadingCart(true);
+      await addToCart(productId, size);
+      toast.success('Producto agregado al carrito',{
+          position: 'top-right',
+          richColors: true
+      })
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setIsLoadingCart(false);
     }
   }
 
@@ -181,7 +210,7 @@ export const ProductPage = () => {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`min-w-[3rem] h-10 px-3 rounded border text-sm font-medium transition-all ${
+                      className={`min-w-[3rem] h-10 px-3 rounded-xl border text-sm font-medium transition-all ${
                         selectedSize === size
                           ? "border-black bg-black text-white"
                           : "border-gray-300 text-gray-700 hover:border-gray-500"
@@ -194,48 +223,32 @@ export const ProductPage = () => {
               </div>
             )}
  
-            {/* Quantity + Add to Cart */}
+            {/*Add to Cart + Favorite */}
             <div className="flex items-center gap-3 mt-2">
-              <div className="flex items-center border border-gray-300 rounded overflow-hidden">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-10 h-11 text-lg font-medium text-gray-600 hover:bg-gray-100 transition"
-                >
-                  −
-                </button>
-                <span className="w-10 h-11 flex items-center justify-center text-sm font-semibold border-x border-gray-300">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity((q) => Math.min(product.stock || Infinity, q + 1))}
-                  className="w-10 h-11 text-lg font-medium text-gray-600 hover:bg-gray-100 transition"
-                >
-                  +
-                </button>
-              </div>
- 
               <button 
-                className="flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer"
-                onClick={handleCart}  
+                className={`flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer
+                          ${isLoadingCart ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={() => handleAddToCart(product.id, selectedSize ?? '')}
+                disabled={isLoadingCart}  
               >
                 <ShoppingCartIcon className="mr-2"/> Agregar al carro
               </button>
 
-                <button 
-                  className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
-                  isFavorite 
-                    ? 'bg-red-500 text-white hover:bg-red-600' 
-                    : 'bg-black text-white hover:bg-gray-800'
-                  } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  onClick={!isFavorite ? handleAddFavorite : () => handleDeleteFavorite(product.id)}
-                  disabled={isLoadingFavorite}
-                >
-                  {!isFavorite ? (
-                    <Heart  />
-                    ):
-                    <HeartOff fill="currentColor" /> 
-                  }
-                </button> 
+              <button 
+                className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
+                isFavorite 
+                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-black text-white hover:bg-gray-800'
+                } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={!isFavorite ? handleAddFavorite : () => handleDeleteFavorite(product.id)}
+                disabled={isLoadingFavorite}
+              >
+                {!isFavorite ? (
+                  <Heart  />
+                  ):
+                  <HeartOff fill="currentColor" /> 
+                }
+              </button> 
               
             </div>
               
