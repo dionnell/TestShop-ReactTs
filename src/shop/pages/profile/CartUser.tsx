@@ -93,7 +93,7 @@ export const CartUser = () => {
       <div className="flex items-center gap-2 mb-6">
         <ShoppingCart className="h-6 w-6" />
         <h1 className="text-2xl font-semibold">Carro de compras</h1>
-        <Badge variant="secondary" className="text-xs px-2 py-0.5 ml-1">
+        <Badge variant="secondary" className="text-xs px-2 py-0.5 ml-1 max-sm:text-sm">
           {count}
         </Badge>
       </div>
@@ -104,7 +104,7 @@ export const CartUser = () => {
         <div className="rounded-2xl border bg-white overflow-hidden">
           {/* Card header */}
           <div className="px-5 py-4 border-b bg-gray-50">
-            <p className="text-xs font-semibold uppercase tracking-widest text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 ">
               {count} {count === 1 ? "producto" : "productos"} en tu carro
             </p>
           </div>
@@ -117,66 +117,68 @@ export const CartUser = () => {
                 <div
                   key={item.id}
                   className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}
-                             max-sm:flex-1 max-sm:flex-col max-sm:items-center`}
+                             max-sm:flex-1 max-sm:flex-col max-sm:items-center max-sm:columns-2`}
                 >
-                  {/* Image */}
-                  <Link
-                    to={`/product/${item.product.slug}`}
-                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block"
-                  >
-                    <img
-                      src={item.product.images?.[0] ?? "https://placehold.co/96"}
-                      alt={item.product.title}
-                      className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
-                    />
-                  </Link>
- 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                  <div className="flex items-start gap-4 flex-1 max-sm:grid max-sm:grid-cols-3">
+                    {/* Image */}
                     <Link
                       to={`/product/${item.product.slug}`}
-                      className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
+                      className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block max-sm:h-32 max-sm:w-32"
                     >
-                      {item.product.title}
+                      <img
+                        src={item.product.images?.[0] ?? "https://placehold.co/96"}
+                        alt={item.product.title}
+                        className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
+                      />
                     </Link>
- 
-                    <div className="flex flex-wrap gap-1.5 mt-0.5">
-                      {item.size && (
-                        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium">
-                          Talla: {item.size}
-                        </span>
-                      )}
-                      {item.product.gender && (
-                        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
-                          {item.product.gender}
-                        </span>
-                      )}
-                      {item.product.tags?.[0] && (
-                        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
-                          {item.product.tags?.[0] }
-                        </span>
+                
+                    {/* Info */}
+                    <div className="flex-1 min-w-0 flex flex-col justify-center gap-1 max-sm:col-span-2">
+                      <Link
+                        to={`/product/${item.product.slug}`}
+                        className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
+                      >
+                        {item.product.title}
+                      </Link>
+                
+                      <div className="flex flex-wrap gap-1.5 mt-0.5">
+                        {item.size && (
+                          <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium">
+                            Talla: {item.size}
+                          </span>
+                        )}
+                        {item.product.gender && (
+                          <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
+                            {item.product.gender}
+                          </span>
+                        )}
+                        {item.product.tags?.[0] && (
+                          <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
+                            {item.product.tags?.[0] }
+                          </span>
+                        )}
+                      </div>
+                      
+                      <p className="text-base font-bold text-gray-900 mt-1">
+                        ${item.subtotal.toLocaleString("es-CL")}
+                      </p>
+                      
+                      {item.quantity > 1 && (
+                        <p className="text-xs text-gray-400">
+                          ${item.product.price?.toLocaleString("es-CL")} c/u
+                        </p>
                       )}
                     </div>
- 
-                    <p className="text-base font-bold text-gray-900 mt-1">
-                      ${item.subtotal.toLocaleString("es-CL")}
-                    </p>
- 
-                    {item.quantity > 1 && (
-                      <p className="text-xs text-gray-400">
-                        ${item.product.price?.toLocaleString("es-CL")} c/u
-                      </p>
-                    )}
                   </div>
  
                   {/* Actions */}
-                  <div className="flex flex-col items-end justify-between shrink-0 gap-2">
+                  <div className="flex flex-col items-end justify-between shrink-0 gap-2 ">
                     {/* Quantity control */}
                     <div className="flex items-center gap-1.5 border rounded-full px-2 py-1">
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 rounded-full"
+                        className="h-6 w-6 rounded-full "
                         disabled={item.quantity <= 1 || isUpdating}
                         onClick={() =>
                           updateCartItem({ itemId: item.id, quantity: item.quantity - 1 })
@@ -190,7 +192,7 @@ export const CartUser = () => {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 rounded-full"
+                        className="h-6 w-6 rounded-full "
                         disabled={isUpdating}
                         onClick={() =>
                           updateCartItem({ itemId: item.id, quantity: item.quantity + 1 })
@@ -205,8 +207,8 @@ export const CartUser = () => {
                       <AlertDialogTrigger asChild>
                         <Button
                           variant="ghost"
-                          size="sm"
-                          className="h-7 px-2 text-xs text-gray-400 hover:text-red-500 hover:bg-red-50 gap-1"
+                          size='lg'
+                          className="h-7 text-xs items-center mt-2 text-gray-400 hover:text-red-500 hover:bg-red-50 "
                           disabled={isBeingRemoved}
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -215,9 +217,9 @@ export const CartUser = () => {
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>¿Desea eliminar este producto del carro?</AlertDialogTitle>
+                          <AlertDialogTitle>¿Eliminar del carro?</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Una vez eliminado, no podrás recuperar este producto.
+                            Se eliminará "{item.product.title}" de tu lista del carro.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

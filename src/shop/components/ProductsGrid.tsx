@@ -52,7 +52,7 @@ export const ProductsGrid = ({products} : Props) => {
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
-            <h2 className="text-3xl font-light">Productos</h2>
+            <h2 className="text-3xl font-light max-sm:text-xl">Productos</h2>
             <span className="text-muted-foreground">({products.length} productos)</span>
           </div>
           

@@ -3,14 +3,13 @@ import { ShoppingCartIcon, Heart, HeartOff } from "lucide-react";
 import { toast } from 'sonner'
 
 import { useProductShop } from "@/shop/hooks/useProductShop"
-import { useFavorite } from "@/shop/hooks/useFavorite";
+import { useFavorite } from "@/shop/hooks/useFavorites"
 import { useAuthStore } from "@/auth/store/auth.store";
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
-import { addFavorite } from "@/shop/actions/addFavorite.action";
-import { removeFavorite } from "@/shop/actions/removeFavorite.action";
+import { useFavorites } from "@/shop/hooks/useFavorites";
 import { addToCart } from "@/shop/actions/addToCart.action";
 
 
@@ -22,10 +21,10 @@ export const ProductPage = () => {
   const { data: product, isLoading, isError } = useProductShop(idSlug || '');
   
   const { data: isFavoriteServer } = useFavorite(product?.id ?? '');
-  
+  const { addFavorite, removeFavorite, isAdding, isRemoving } = useFavorites();
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [isLoadingFavorite, setIsLoadingFavorite] = useState(false);
   const [isLoadingCart, setIsLoadingCart] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false)
 
@@ -44,70 +43,47 @@ export const ProductPage = () => {
     );
   }
 
-  const handleAddFavorite = async () => {
-    if(!user){
-      navigate('/auth/login')
-      return
-    }
+  const isLoadingFavorite = isAdding || isRemoving
 
-    try {
-      setIsLoadingFavorite(true);
-      await addFavorite(product.id);
-      setIsFavorite(true); 
-      toast.success('Producto agregado a favoritos',{
-          position: 'top-right',
-          richColors: true
-      })
-    } catch (error: any) {
-      if (error?.response?.status === 409) {
-        setIsFavorite(true); 
-        return;
-      }
-      console.error(error);
-    } finally {
-      setIsLoadingFavorite(false)
-    }
+  const handleAddFavorite = () => {
+    if (!user) { navigate('/auth/login'); return }
+
+    addFavorite(product.id, {
+      onSuccess: () => {
+        setIsFavorite(true)
+        toast.success('Producto agregado a favoritos', { position: 'top-right', richColors: true })
+      },
+      onError: (error: any) => {
+        if (error?.response?.status === 409) { setIsFavorite(true); return }
+        console.error(error)
+      },
+    })
   }
 
-  const handleDeleteFavorite = async (productId: string) => {
-    if(!user){
-      navigate('/auth/login')
-      return
-    }
-    try {
-      setIsLoadingFavorite(true);
-      await removeFavorite(productId);
-      setIsFavorite(false);
-      toast.success('Producto eliminado de favoritos',{
-          position: 'top-right',
-          richColors: true
-      })
-    } catch (error: any) {
-      console.error(error);
-    } finally {
-      setIsLoadingFavorite(false);
-    }
+  const handleDeleteFavorite = () => {
+    if (!user) { navigate('/auth/login'); return }
+
+    removeFavorite(product.id, {
+      onSuccess: () => {
+        setIsFavorite(false)
+        toast.success('Producto eliminado de favoritos', { position: 'top-right', richColors: true })
+      },
+      onError: (error: any) => console.error(error),
+    })
   }
 
-  const handleAddToCart = async(productId: string, size: string) => {
-    if(!user){
-      navigate('/auth/login')
-    }
+  const handleAddToCart = async (productId: string, size: string) => {
+    if (!user) { navigate('/auth/login'); return }
 
-    if(selectedSize === null ){
-      toast.error('Seleccionar una talla',{
-        position: 'top-right',
-        richColors: true
-      })
+    if (selectedSize === null) {
+      toast.error('Seleccionar una talla', { position: 'top-right', richColors: true })
+      return
     }
 
     try {
       setIsLoadingCart(true);
       await addToCart(productId, size);
-      toast.success('Producto agregado al carrito',{
-          position: 'top-right',
-          richColors: true
-      })
+      toast.success('Producto agregado al carrito', { position: 'top-right', richColors: true })
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -120,52 +96,36 @@ export const ProductPage = () => {
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 py-3">
         <nav className="text-xs text-gray-500 flex gap-1 flex-wrap">
-          <Link
-            to={`/`}
-          >
-            <span className="hover:underline cursor-pointer">Inicio</span>
-          </Link>
-          
+          <Link to="/"><span className="hover:underline cursor-pointer">Inicio</span></Link>
           <span>/</span>
-          <Link
-            to={`/gender/${product.gender}`}
-          >
+          <Link to={`/gender/${product.gender}`}>
             <span className="hover:underline cursor-pointer capitalize">{product.gender || "Categoría"}</span>
           </Link>
-          
           <span>/</span>
           <span className="text-gray-800 font-medium truncate max-w-xs">{product.title}</span>
         </nav>
       </div>
- 
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
- 
+
           {/* LEFT — Image Gallery */}
           <div className="flex gap-3">
-            {/* Thumbnails */}
             <div className="flex flex-col gap-2 w-16 shrink-0">
               {product.images.map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
                   className={`border-2 rounded overflow-hidden transition-all ${
-                    selectedImage === i
-                      ? "border-black"
-                      : "border-gray-200 hover:border-gray-400"
+                    selectedImage === i ? "border-black" : "border-gray-200 hover:border-gray-400"
                   }`}
                 >
-                  <img
-                    src={img}
-                    alt={`${product.title} ${i + 1}`}
-                    className="w-full aspect-square object-cover cursor-pointer"
-                  />
+                  <img src={img} alt={`${product.title} ${i + 1}`} className="w-full aspect-square object-cover cursor-pointer" />
                 </button>
               ))}
             </div>
- 
-            {/* Main Image */}
+
             <div className="flex-1 relative overflow-hidden rounded-lg border border-gray-100 bg-gray-50 shadow-md">
               <img
                 src={product.images[selectedImage]}
@@ -174,36 +134,24 @@ export const ProductPage = () => {
               />
             </div>
           </div>
-  
+
           {/* RIGHT — Product Info */}
           <div className="flex flex-col gap-4">
-            {/* Brand & Title */}
             <div>
-              {/* {product.brand && (
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-1">
-                  {product.brand}
-                </p>
-              )} */}
-              <h1 className="text-2xl font-bold text-gray-900 leading-tight">
-                {product.title}
-              </h1>
+              <h1 className="text-2xl font-bold text-gray-900 leading-tight">{product.title}</h1>
             </div>
- 
-            {/* Price */}
+
             <div className="flex items-end gap-3">
               <span className="text-3xl font-extrabold text-gray-900">
                 ${product.price?.toLocaleString("es-CL")}
               </span>
             </div>
- 
-            {/* Sizes */}
+
             {product.sizes && product.sizes.length > 0 && (
               <div>
                 <p className="text-sm font-semibold text-gray-700 mb-2">
                   Talla:{" "}
-                  <span className="font-normal text-gray-500">
-                    {selectedSize ?? "Selecciona una talla"}
-                  </span>
+                  <span className="font-normal text-gray-500">{selectedSize ?? "Selecciona una talla"}</span>
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {product.sizes.map((size) => (
@@ -222,74 +170,52 @@ export const ProductPage = () => {
                 </div>
               </div>
             )}
- 
-            {/*Add to Cart + Favorite */}
+
             <div className="flex items-center gap-3 mt-2">
-              <button 
+              <button
                 className={`flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer
-                          ${isLoadingCart ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  ${isLoadingCart ? 'opacity-50 cursor-not-allowed' : ''}`}
                 onClick={() => handleAddToCart(product.id, selectedSize ?? '')}
-                disabled={isLoadingCart}  
+                disabled={isLoadingCart}
               >
-                <ShoppingCartIcon className="mr-2"/> Agregar al carro
+                <ShoppingCartIcon className="mr-2" /> Agregar al carro
               </button>
 
-              <button 
+              <button
                 className={`h-11 w-10 flex items-center justify-center font-semibold rounded-4xl transition-all text-sm tracking-wide cursor-pointer ${
-                isFavorite 
-                  ? 'bg-red-500 text-white hover:bg-red-600' 
-                  : 'bg-black text-white hover:bg-gray-800'
+                  isFavorite
+                    ? 'bg-red-500 text-white hover:bg-red-600'
+                    : 'bg-black text-white hover:bg-gray-800'
                 } ${isLoadingFavorite ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={!isFavorite ? handleAddFavorite : () => handleDeleteFavorite(product.id)}
+                onClick={isFavorite ? handleDeleteFavorite : handleAddFavorite}
                 disabled={isLoadingFavorite}
               >
-                {!isFavorite ? (
-                  <Heart  />
-                  ):
-                  <HeartOff fill="currentColor" /> 
-                }
-              </button> 
-              
+                {!isFavorite ? <Heart /> : <HeartOff fill="currentColor" />}
+              </button>
             </div>
-              
- 
-            {/* Divider */}
+
             <hr className="border-gray-200 my-1" />
- 
-            {/* Description */}
+
             {product.description && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-800 mb-1">
-                  Descripción
-                </h3>
-                <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">
-                  {product.description}
-                </p>
+                <h3 className="text-sm font-semibold text-gray-800 mb-1">Descripción</h3>
+                <p className="text-sm text-gray-600 leading-relaxed line-clamp-4">{product.description}</p>
               </div>
             )}
- 
-            {/* Tags */}
+
             {product.tags && product.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {product.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs bg-gray-100 text-gray-600 rounded-full px-3 py-1"
-                  >
-                    {tag}
-                  </span>
+                  <span key={tag} className="text-xs bg-gray-100 text-gray-600 rounded-full px-3 py-1">{tag}</span>
                 ))}
               </div>
             )}
- 
-            {/* Stock Status */}
+
             <div className="flex items-center gap-2 text-sm">
               {product.stock > 0 ? (
                 <>
                   <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
-                  <span className="text-green-700 font-medium">
-                    En stock ({product.stock} disponibles)
-                  </span>
+                  <span className="text-green-700 font-medium">En stock ({product.stock} disponibles)</span>
                 </>
               ) : (
                 <>
@@ -302,20 +228,11 @@ export const ProductPage = () => {
         </div>
       </div>
 
-      {/* Divider */}
       <hr className="border-gray-200 my-1" />
 
-      <div>
-        {/* Aquí podrías agregar una sección de productos relacionados o recomendaciones */}
-        <div className="border-t border-gray-100 mt-6">
-          <RelatedProducts
-            gender={product.gender ?? ""}
-            currentSlug={idSlug ?? ""}
-          />
-        </div>
+      <div className="border-t border-gray-100 mt-6">
+        <RelatedProducts gender={product.gender ?? ""} currentSlug={idSlug ?? ""} />
       </div>
-
     </div>
-    
   )
 }
