@@ -76,7 +76,6 @@ export const FavoriteUser = () => {
     )
   }
 
-  // ── Main layout ────────────────────────────────────────────────────────────
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
@@ -105,43 +104,45 @@ export const FavoriteUser = () => {
                 key={favorite.id}
                 className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}`}
               >
-                {/* Image */}
-                <Link
-                  to={`/product/${favorite.product.slug}`}
-                  className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block"
-                >
-                  <img
-                    src={favorite.product.images?.[0] ?? "https://placehold.co/96"}
-                    alt={favorite.product.title}
-                    className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
-                  />
-                </Link>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+                <div className="flex items-start gap-4 flex-1 max-sm:grid max-sm:grid-cols-3">
+                  {/* Image */}
                   <Link
                     to={`/product/${favorite.product.slug}`}
-                    className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
+                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block max-sm:h-32 max-sm:w-32"
                   >
-                    {favorite.product.title}
+                    <img
+                      src={favorite.product.images?.[0] ?? "https://placehold.co/96"}
+                      alt={favorite.product.title}
+                      className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
+                    />
                   </Link>
 
-                  <div className="flex flex-wrap gap-1.5 mt-0.5">
-                    {favorite.product.gender && (
-                      <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
-                        {favorite.product.gender}
-                      </span>
-                    )}
-                    {favorite.product.tags?.[0] && (
-                      <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
-                        {favorite.product.tags[0]}
-                      </span>
-                    )}
-                  </div>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-center gap-1 max-sm:col-span-2">
+                    <Link
+                      to={`/product/${favorite.product.slug}`}
+                      className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
+                    >
+                      {favorite.product.title}
+                    </Link>
 
-                  <p className="text-base font-bold text-gray-900 mt-1">
-                    ${favorite.product.price?.toLocaleString("es-CL")}
-                  </p>
+                    <div className="flex flex-wrap gap-1.5 mt-0.5">
+                      {favorite.product.gender && (
+                        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
+                          {favorite.product.gender}
+                        </span>
+                      )}
+                      {favorite.product.tags?.[0] && (
+                        <span className="text-xs bg-gray-100 text-gray-600 rounded-full px-2.5 py-0.5 font-medium capitalize">
+                          {favorite.product.tags[0]}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-base font-bold text-gray-900 mt-1">
+                      ${favorite.product.price?.toLocaleString("es-CL")}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Actions */}
