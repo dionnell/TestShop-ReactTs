@@ -105,11 +105,11 @@ export const FavoriteUser = () => {
                 className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}
                           max-sm:flex-1 max-sm:flex-col max-sm:items-center max-sm:columns-2`}
               >
-                <div className="flex items-start gap-4 flex-1 max-sm:grid max-sm:grid-cols-3">
+                <div className="flex items-start gap-4 flex-1 max-sm:grid max-sm:grid-cols-3 max-sm:gap-1.5">
                   {/* Image */}
                   <Link
                     to={`/product/${favorite.product.slug}`}
-                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block "
+                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block"
                   >
                     <img
                       src={favorite.product.images?.[0] ?? "https://placehold.co/96"}
