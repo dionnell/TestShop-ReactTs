@@ -102,7 +102,8 @@ export const FavoriteUser = () => {
             return (
               <div
                 key={favorite.id}
-                className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}`}
+                className={`flex gap-4 p-5 transition-opacity duration-200 ${isBeingRemoved ? "opacity-40" : ""}
+                          max-sm:flex-1 max-sm:flex-col max-sm:items-center max-sm:columns-2`}
               >
                 <div className="flex items-start gap-4 flex-1 max-sm:grid max-sm:grid-cols-3">
                   {/* Image */}
