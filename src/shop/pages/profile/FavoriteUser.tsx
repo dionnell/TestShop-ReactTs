@@ -109,7 +109,7 @@ export const FavoriteUser = () => {
                   {/* Image */}
                   <Link
                     to={`/product/${favorite.product.slug}`}
-                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block max-sm:h-32 max-sm:w-32"
+                    className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block "
                   >
                     <img
                       src={favorite.product.images?.[0] ?? "https://placehold.co/96"}
@@ -122,7 +122,7 @@ export const FavoriteUser = () => {
                   <div className="flex-1 min-w-0 flex flex-col justify-center gap-1 max-sm:col-span-2">
                     <Link
                       to={`/product/${favorite.product.slug}`}
-                      className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
+                      className="text-sm font-semibold text-gray-900 line-clamp-2 hover:cursor-pointer hover:text-blue-600 transition-colors duration-200"
                     >
                       {favorite.product.title}
                     </Link>

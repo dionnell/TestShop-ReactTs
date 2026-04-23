@@ -123,7 +123,7 @@ export const CartUser = () => {
                     {/* Image */}
                     <Link
                       to={`/product/${item.product.slug}`}
-                      className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block max-sm:h-32 max-sm:w-32"
+                      className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block "
                     >
                       <img
                         src={item.product.images?.[0] ?? "https://placehold.co/96"}
