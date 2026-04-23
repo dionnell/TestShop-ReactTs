@@ -133,7 +133,7 @@ export const CartUser = () => {
                     </Link>
                 
                     {/* Info */}
-                    <div className="flex-1 min-w-0 flex flex-col justify-center gap-1 max-sm:col-span-2">
+                    <div className="flex-1 min-w-0 flex flex-col justify-center gap-1 max-sm:col-span-2 max-sm:ml-2">
                       <Link
                         to={`/product/${item.product.slug}`}
                         className="text-sm font-semibold text-gray-900 line-clamp-2 hover:underline"
