@@ -79,7 +79,6 @@ export const DashboardPage = () => {
         
         <div className="space-y-6">
           <ActivityFeed />
-          <QuickActions />
         </div>
       </div>
 

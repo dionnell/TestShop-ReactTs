@@ -10,7 +10,7 @@ export const QuickActions: React.FC = () => {
     { icon: Upload, label: 'Import Data', color: 'bg-teal-500 hover:bg-teal-600' },
     { icon: Settings, label: 'Settings', color: 'bg-gray-500 hover:bg-gray-600' },
   ];
-
+ 
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>

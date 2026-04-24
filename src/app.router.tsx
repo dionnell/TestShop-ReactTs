@@ -17,6 +17,8 @@ import { AdminRoute, NotAuthenticatedRoute, AuthenticatedRoute } from "./compone
 import { FavoriteUser } from "./shop/pages/profile/FavoriteUser";
 import { ProfileUser } from "./shop/pages/profile/ProfileUser";
 import { CartUser } from "./shop/pages/profile/CartUser";
+import { PaymentSuccessPage } from "./shop/components/Paymentsuccesspage";
+import { PaymentFailedPage } from "./shop/components/Paymentfailedpage";
 
 const AuthLayout = lazy(() => import('./auth/layouts/AuthLayout'))
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'))
@@ -38,7 +40,7 @@ const appRouter = createHashRouter([
             {
                 path: 'gender/:gender',
                 element: <GenderPage/>
-            }
+            },
         ]
     },
 
@@ -108,7 +110,16 @@ const appRouter = createHashRouter([
             {
                 path: 'cart',
                 element: <CartUser/>
-            }
+            },
+            // Transbank redirige aquí tras el pago — no requieren auth
+            {
+              path: 'payment/success',
+              element: <PaymentSuccessPage />
+            },
+            {
+              path: 'payment/failed',
+              element: <PaymentFailedPage />
+            },
         ]
     },
     

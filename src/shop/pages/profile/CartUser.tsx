@@ -7,6 +7,7 @@ import { useCart } from "@/shop/hooks/useCart"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CartItemSkeleton } from "@/shop/components/CartItemSkeleton"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { CheckoutButton } from "@/shop/components/Checkoutbutton"
 
 
 export const CartUser = () => {
@@ -261,15 +262,12 @@ export const CartUser = () => {
  
           <Separator className="my-4" />
  
-          <div className="flex justify-between items-center font-bold text-base">
+          <div className="flex justify-between items-center font-bold text-base mb-2">
             <span>Total</span>
             <span>${finalTotal.toLocaleString("es-CL")}</span>
           </div>
  
-          <Button className="w-full mt-4 rounded-xl h-11 text-sm" disabled={count === 0}>
-            Ir a pagar
-            <ChevronRight className="h-4 w-4 ml-1" />
-          </Button>
+          <CheckoutButton disabled={count === 0} />
  
           <p className="text-center text-xs text-gray-400 mt-3">🔒 Compra segura y protegida</p>
         </div>
