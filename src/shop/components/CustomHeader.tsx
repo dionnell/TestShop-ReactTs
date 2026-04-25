@@ -20,9 +20,9 @@ export const CustomHeader = () => {
   const { authStatus, logout, isAdmin } = useAuthStore()
   const { gender } = useParams()
 
-  const desktopRef = useRef<HTMLInputElement>(null);
-  const mobileRef = useRef<HTMLInputElement>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const desktopRef = useRef<HTMLInputElement>(null)
+  const mobileRef = useRef<HTMLInputElement>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const query = searchParams.get('query') || ''
 
