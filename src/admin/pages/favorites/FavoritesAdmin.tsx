@@ -7,12 +7,18 @@ import { useFavoritesCount } from "@/shop/hooks/useFavorites"
 import { Link } from "react-router"
 
 export const FavoritesAdmin = () => {
-  const { data, isLoading } = useFavoritesCount()
+  const { data, isLoading, isError } = useFavoritesCount()
 
-    if(isLoading) {
-      return <CustomFullScreenLoading/>
-    }
+  if (isLoading) return <CustomFullScreenLoading/>
   
+  if (isError || !data) {
+    return (
+      <div className="p-6 text-center text-red-500">
+        No se pudieron cargar los favoritos. Intenta de nuevo.
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -60,7 +66,7 @@ export const FavoritesAdmin = () => {
                 <TableCell className="max-w-[100px] px-4">{formatCurrency(product.product.price, 'CLP')}</TableCell>
                 <TableCell className="max-w-[80px] px-4">{product.product.tags?.join(', ')}</TableCell>
                 <TableCell className="max-w-[100px] px-4">{product.product.stock}</TableCell>
-                <TableCell className="text-center">
+                <TableCell className="max-w-[100px] px-4 text-center">
                   <span className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-red-50 text-red-600 font-semibold text-sm">
                     {product.favoriteCount}
                   </span>

@@ -4,11 +4,8 @@ import {
   Users, 
   BarChart3, 
   Heart,
-  Settings, 
   FileText, 
   ShoppingCart, 
-  Bell, 
-  HelpCircle,
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
@@ -33,9 +30,6 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) 
     { icon: Users, label: 'Usuarios' },
     { icon: ShoppingCart, label: 'Ordenes' },
     { icon: FileText, label: 'Reportes' },
-    { icon: Bell, label: 'Notificationes' },
-    { icon: Settings, label: 'Ajustes' },
-    { icon: HelpCircle, label: 'Ayuda' },
   ];
 
   const isActiveRoute = (to: string) => {

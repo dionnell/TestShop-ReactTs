@@ -1,25 +1,28 @@
 import React, { useRef, type KeyboardEvent } from 'react';
 import { Search, Bell, MessageSquare, Settings } from 'lucide-react';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 export const AdminHeader: React.FC = () => {
  
     const { user } = useAuthStore()
     const inputRef = useRef<HTMLInputElement>(null)
     const navigate = useNavigate()
-
-    const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
-        if(e.key !== 'Enter') return
-        const query = inputRef.current?.value
-            
-        if(!query){ 
-          navigate('/admin/products')
-        } else {
-          navigate(`/admin/products?query=${query}`)
-        }
+    const { pathname } = useLocation()
     
+    const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
+      if(e.key !== 'Enter') return
+      const query = inputRef.current?.value
+
+      const isFavorites = pathname.includes('/admin/favorites')
+      const basePath = isFavorites ? '/admin/favorites' : '/admin/products'
+
+      if(!query){ 
+        navigate(basePath)
+      } else {
+        navigate(`${basePath}?query=${query}`)
       }
+    }
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 h-18">
