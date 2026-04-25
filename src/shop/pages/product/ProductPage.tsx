@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { RelatedProducts } from "@/shop/components/RelatedProducts";
 import { useFavorites } from "@/shop/hooks/useFavorites";
-import { addToCart } from "@/shop/actions/addToCart.action";
+import { useCart } from "@/shop/hooks/useCart"
 
 
 export const ProductPage = () => {
@@ -22,10 +22,10 @@ export const ProductPage = () => {
   
   const { data: isFavoriteServer } = useFavorite(product?.id ?? '');
   const { addFavorite, removeFavorite, isAdding, isRemoving } = useFavorites();
+  const { addToCart, isAdding: isAddingToCart } = useCart()
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [isLoadingCart, setIsLoadingCart] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false)
 
   useEffect(() => {
@@ -72,24 +72,18 @@ export const ProductPage = () => {
     })
   }
 
-  const handleAddToCart = async (productId: string, size: string) => {
-    if (!user) { navigate('/auth/login'); return }
-
-    if (selectedSize === null) {
-      toast.error('Seleccionar una talla', { position: 'top-right', richColors: true })
-      return
-    }
-
-    try {
-      setIsLoadingCart(true);
-      await addToCart(productId, size);
-      toast.success('Producto agregado al carrito', { position: 'top-right', richColors: true })
-    } catch (error: any) {
-      console.error(error);
-    } finally {
-      setIsLoadingCart(false);
-    }
+  const handleAddToCart = () => {
+  if (!user) { navigate('/auth/login'); return }
+  if (!selectedSize) {
+    toast.error('Seleccionar una talla', { position: 'top-right', richColors: true })
+    return
   }
+
+  addToCart({ productId: product.id, size: selectedSize }, {
+    onSuccess: () => toast.success('Producto agregado al carrito', { position: 'top-right', richColors: true }),
+    onError: (error: any) => console.error(error),
+  })
+}
 
   return (
     <div className="bg-white min-h-screen mt-5">
@@ -174,9 +168,9 @@ export const ProductPage = () => {
             <div className="flex items-center gap-3 mt-2">
               <button
                 className={`flex items-center justify-center h-11 px-4 bg-black text-white font-semibold rounded-4xl hover:bg-gray-800 transition-all text-sm tracking-wide cursor-pointer
-                  ${isLoadingCart ? 'opacity-50 cursor-not-allowed' : ''}`}
-                onClick={() => handleAddToCart(product.id, selectedSize ?? '')}
-                disabled={isLoadingCart}
+                  ${isAddingToCart ? 'opacity-50 cursor-not-allowed' : ''}`}
+                onClick={handleAddToCart}
+                disabled={isAddingToCart }
               >
                 <ShoppingCartIcon className="mr-2" /> Agregar al carro
               </button>

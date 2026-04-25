@@ -61,7 +61,9 @@ export const FavoritesAdmin = () => {
                 <TableCell className="max-w-[80px] px-4">{product.product.tags?.join(', ')}</TableCell>
                 <TableCell className="max-w-[100px] px-4">{product.product.stock}</TableCell>
                 <TableCell className="text-center">
-                  
+                  <span className="inline-flex items-center justify-center h-7 w-7 rounded-full bg-red-50 text-red-600 font-semibold text-sm">
+                    {product.favoriteCount}
+                  </span>
                 </TableCell>
               </TableRow>
             ))

@@ -31,15 +31,18 @@ export const getFavoritesAdminAction = async(options: Options): Promise<GetFavor
         }
     }) 
 
-    const productsWithImage = data.favorites.map(favorites => ({
-        ...favorites,
-        images: favorites.product.images.map(
-            image => `${import.meta.env.VITE_API_URL}/files/product/${image}`
-        )
-    }))
-
     return {
-        ...data,
-        favorites: productsWithImage,
+      ...data,
+      favorites: data.favorites.map(favorite => ({
+        ...favorite,
+        product: {
+          ...favorite.product,
+          images: favorite.product.images.map(
+            image => image.includes('http') 
+              ? image 
+              : `${import.meta.env.VITE_API_URL}/files/product/${image}`
+          )
+        }
+      }))
     }
 }
