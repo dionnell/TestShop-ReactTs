@@ -8,7 +8,7 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 - **Catálogo de productos** con filtros por talla, precio y género, búsqueda por nombre y paginación.
 - **Navegación por género** (Hombres, Mujeres, Niños) con páginas dedicadas.
 - **Página de detalle de producto** con galería de imágenes, selección de talla, productos relacionados y zoom.
-- **Carrito de compras** con control de cantidad, eliminación de items y resumen de compra con despacho gratis sobre $50.000 CLP.
+- **Carrito de compras** con control de cantidad, eliminación de items y resumen de compra.
 - **Favoritos** para guardar productos de interés y gestionarlos desde el perfil.
 - **Perfil de usuario** con edición de nombre, teléfono y dirección, y cambio de contraseña.
 - **Pago con Transbank Webpay Plus** en ambiente de integración, con redirección a página de éxito o fallo según resultado.
