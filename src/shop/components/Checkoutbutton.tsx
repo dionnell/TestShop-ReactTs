@@ -8,6 +8,8 @@ interface Props {
 
 export const CheckoutButton = ({ disabled }: Props) => {
   const { initiatePayment, isLoading } = usePayment()
+  console.log('isLoading', isLoading)
+  console.log('initiatePayment' )
 
   return (
     <Button

@@ -12,7 +12,7 @@ export const useCart = () => {
     retry: false,
     staleTime: 1000 * 60 * 5,
   })
-
+ 
   const removeMutation = useMutation({
     mutationFn: (itemId: string) => removeFromCart(itemId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),

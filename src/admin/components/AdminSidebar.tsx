@@ -3,6 +3,7 @@ import {
   Home, 
   Users, 
   BarChart3, 
+  Heart,
   Settings, 
   FileText, 
   ShoppingCart, 
@@ -28,6 +29,7 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) 
   const menuItems = [
     { icon: Home, label: 'Dashboard', to: '/admin' },
     { icon: BarChart3, label: 'Productos', to: '/admin/products' },
+    { icon: Heart, label: 'Favoritos', to: '/admin/favorites' },
     { icon: Users, label: 'Usuarios' },
     { icon: ShoppingCart, label: 'Ordenes' },
     { icon: FileText, label: 'Reportes' },

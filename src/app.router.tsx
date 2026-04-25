@@ -12,6 +12,7 @@ import { RegisterPage } from "./auth/pages/register/RegisterPage";
 import { DashboardPage } from "./admin/pages/dashboard/DashboardPage";
 import { AdminProductsPage } from "./admin/pages/products/AdminProductsPage";
 import { AdminProductPage } from "./admin/pages/product/AdminProductPage";
+import { FavoritesAdmin } from "./admin/pages/favorites/FavoritesAdmin";
 
 import { AdminRoute, NotAuthenticatedRoute, AuthenticatedRoute } from "./components/routes/ProtectedRoutes";
 import { FavoriteUser } from "./shop/pages/profile/FavoriteUser";
@@ -84,6 +85,10 @@ const appRouter = createHashRouter([
             {
                 path: 'products/:id',
                 element: <AdminProductPage/>
+            },
+            {
+                path: 'favorites',
+                element: <FavoritesAdmin/>
             }
         ]
     },

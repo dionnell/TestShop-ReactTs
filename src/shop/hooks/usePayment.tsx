@@ -21,18 +21,17 @@ export const usePayment = () => {
 
   const initiatePayment = async () => {
     try {
-      const { url, token } = await createPaymentAction()
-
-      // Transbank requiere un POST con token_ws — no una redirección simple
+      const { url, token } = await paymentMutation.mutateAsync()
+    
       const form = document.createElement("form")
       form.method = "POST"
       form.action = url
-
+    
       const input = document.createElement("input")
       input.type = "hidden"
       input.name = "token_ws"
       input.value = token
-
+    
       form.appendChild(input)
       document.body.appendChild(form)
       form.submit()
