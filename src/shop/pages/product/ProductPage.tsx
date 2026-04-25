@@ -172,7 +172,7 @@ export const ProductPage = () => {
                 onClick={handleAddToCart}
                 disabled={isAddingToCart }
               >
-                <ShoppingCartIcon className="mr-2" /> Agregar al carro
+                <ShoppingCartIcon className="mr-2" /> {isAddingToCart ? "Agregando..." : "Agregar al carro"}
               </button>
 
               <button
