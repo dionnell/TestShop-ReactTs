@@ -1,0 +1,47 @@
+import { testShopApi } from "@/api/testShopApi";
+
+export interface PaymentItemSnapshot {
+  id: string;
+  unitPrice: number;
+  size: string;
+  quantity: number;
+  subtotal: number;
+  product: {
+    id: string;
+    title: string;
+    images: string[];
+    price: number;
+    slug: string;
+  } | null;
+}
+
+export interface PaymentHistory {
+  id: string;
+  buyOrder: string;
+  amount: number;
+  status: 'pending' | 'approved' | 'failed' | 'cancelled';
+  items: PaymentItemSnapshot[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const getMyPaymentsAction = async (): Promise<PaymentHistory[]> => {
+  const { data } = await testShopApi.get<PaymentHistory[]>('/payments/my-payments');
+
+  return data.map((payment) => ({
+    ...payment,
+    items: payment.items.map((item) => ({
+      ...item,
+      product: item.product
+        ? {
+            ...item.product,
+            images: item.product.images.map((image) =>
+              image.includes('http')
+                ? image
+                : `${import.meta.env.VITE_API_URL}/files/product/${image}`
+            ),
+          }
+        : null,
+    })),
+  }));
+};

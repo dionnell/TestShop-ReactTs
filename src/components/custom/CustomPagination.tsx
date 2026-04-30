@@ -52,6 +52,7 @@ export const CustomPagination = ({ totalPages }: Props) => {
         variant="outline"
         size="sm"
         disabled={page === 1}
+        hidden={totalPages === 1 || (isMobile && totalPages <= 3)}
         onClick={() => handlePageChange(page - 1)}
       >
         <ChevronLeft className="h-4 w-4" />
@@ -82,6 +83,7 @@ export const CustomPagination = ({ totalPages }: Props) => {
         variant="outline"
         size="sm"
         disabled={page === totalPages}
+        hidden={totalPages === 1 || (isMobile && totalPages <= 3)}
         onClick={() => handlePageChange(page + 1)}
       >
         <span className="hidden md:inline">Siguiente</span>
