@@ -8,6 +8,7 @@ import { formatCurrency } from "@/lib/currency-formatter"
 
 export const HistoryUser = () => {
   const { data: payments, isLoading, isError, error } = useMyPayments()
+  const completedPayments = payments?.filter(payment => payment.status === 'approved') || []
 
   // Loading 
   if (isLoading) {
@@ -70,12 +71,12 @@ export const HistoryUser = () => {
         <ShoppingBag className="h-6 w-6" />
         <h1 className="text-2xl font-semibold">Mis compras</h1>
         <Badge variant="secondary" className="text-xs px-2 py-0.5 ml-1">
-          {payments.length} {payments.length === 1 ? "orden" : "órdenes"}
+          {completedPayments.length} {completedPayments.length === 1 ? "orden" : "órdenes"}
         </Badge>
       </div>
 
       <div className="space-y-4">
-        {payments.map((payment) => {
+        {completedPayments.map((payment) => {
           return (
             <div
               key={payment.id}

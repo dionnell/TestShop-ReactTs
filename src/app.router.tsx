@@ -21,6 +21,7 @@ import { CartUser } from "./shop/pages/profile/CartUser";
 import { PaymentSuccessPage } from "./shop/components/Paymentsuccesspage";
 import { PaymentFailedPage } from "./shop/components/Paymentfailedpage";
 import { HistoryUser } from "./shop/pages/profile/HistoryUser";
+import { AdminUsers } from "./admin/pages/users/AdminUsers";
 
 const AuthLayout = lazy(() => import('./auth/layouts/AuthLayout'))
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'))
@@ -90,6 +91,10 @@ const appRouter = createHashRouter([
             {
                 path: 'favorites',
                 element: <FavoritesAdmin/>
+            },
+            {
+                path: 'users',
+                element: <AdminUsers/>
             }
         ]
     },

@@ -19,6 +19,7 @@ export interface PaymentHistory {
   id: string;
   buyOrder: string;
   amount: number;
+  status: string;
   items: PaymentItemSnapshot[];
   createdAt: string;
   updatedAt: string;

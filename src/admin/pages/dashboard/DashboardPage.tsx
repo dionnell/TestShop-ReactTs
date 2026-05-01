@@ -2,18 +2,11 @@ import { ActivityFeed } from "@/admin/components/ActivityFeed";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import  { Chart } from "@/admin/components/Chart";
 import { StatCard } from "@/admin/components/StatCard";
+import { useUsers } from "@/admin/hooks/useUsers";
 import { useFavoritesCount } from "@/shop/hooks/useFavorites";
 import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "lucide-react";
 
 const stats = [
-    {
-      title: 'Total Users',
-      value: '24,567',
-      change: '+12.5% from last month',
-      changeType: 'positive' as const,
-      icon: Users,
-      color: 'bg-blue-500'
-    },
     {
       title: 'Revenue',
       value: '$84,230',
@@ -48,6 +41,7 @@ const stats = [
 
 export const DashboardPage = () => {
 
+  const { data: users } = useUsers()
   const {data: favoritesData} = useFavoritesCount()
 
   return (
@@ -65,12 +59,21 @@ export const DashboardPage = () => {
           <StatCard key={index} {...stat} />
         ))}
         <StatCard 
+          title="Total Users"
+          value={users?.length.toString() || '0'}
+          change="+12.5% from last month"
+          changeType="positive"
+          icon={Users}
+          color="bg-blue-500"
+        />
+
+        <StatCard 
           title="Favorites"
           value={favoritesData?.favorites.filter(fav => fav.favoriteCount > 0).length.toString() || '0'}
           change="+12.5% from last month"
           changeType="positive"
           icon={HeartIcon}
-          color="bg-blue-500"
+          color="bg-red-500"
         />
       </div>
 
