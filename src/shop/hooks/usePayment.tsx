@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createPaymentAction } from "../actions/createPayment.action"
-import { getMyPaymentsAction } from "../actions/getPaymentUser.action"
+import { getMyPaymentsAction } from "../actions/getMyPayments.action"
 import { toast } from "sonner"
 
 export const usePayment = () => {

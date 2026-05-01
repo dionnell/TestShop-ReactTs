@@ -84,7 +84,7 @@ export const HistoryUser = () => {
               {/* Order header */}
               <div className="px-5 py-4 border-b bg-gray-50 flex items-center justify-between flex-wrap gap-3">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 font-bold">
                     Orden:{" "}
                     <span className="font-mono text-gray-700">{payment.buyOrder}</span>
                   </span>
