@@ -1,4 +1,4 @@
-import { Search, Menu, User, ShieldUser, Heart, ShoppingCart, LogOut, LogIn } from "lucide-react";
+import { Search, Menu, User, ShieldUser, Heart, ShoppingCart, BookText, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -171,6 +171,10 @@ export const CustomHeader = () => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link to="/profile/cart"><ShoppingCart /> Carrito de Compras</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile/history"><BookText /> Historial de Compras</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild variant='destructive'>

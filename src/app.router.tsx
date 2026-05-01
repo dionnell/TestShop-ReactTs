@@ -127,7 +127,7 @@ const appRouter = createHashRouter([
               element: <PaymentFailedPage />
             },
             {
-                path: 'History',
+                path: 'history',
                 element: <HistoryUser/>
             }
         ]

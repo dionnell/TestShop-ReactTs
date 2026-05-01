@@ -19,7 +19,6 @@ export interface PaymentHistory {
   id: string;
   buyOrder: string;
   amount: number;
-  status: 'pending' | 'approved' | 'failed' | 'cancelled';
   items: PaymentItemSnapshot[];
   createdAt: string;
   updatedAt: string;
@@ -35,7 +34,7 @@ export const getMyPaymentsAction = async (): Promise<PaymentHistory[]> => {
       product: item.product
         ? {
             ...item.product,
-            images: item.product.images.map((image) =>
+            images: item.product.images?.map((image) =>
               image.includes('http')
                 ? image
                 : `${import.meta.env.VITE_API_URL}/files/product/${image}`
