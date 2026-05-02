@@ -60,7 +60,7 @@ export const DashboardPage = () => {
         ))}
         <StatCard 
           title="Total Users"
-          value={users?.length.toString() || '0'}
+          value={users?.users.length.toString() || '0'}
           change="+12.5% from last month"
           changeType="positive"
           icon={Users}

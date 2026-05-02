@@ -9,20 +9,22 @@ export const AdminHeader: React.FC = () => {
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const navigate = useNavigate()
     const { pathname } = useLocation()
+    const placeholder = pathname.includes('/admin/users') ? 'Buscar usuarios...' : pathname.includes('/admin/favorites') ? 'Buscar productos favoritos...' : 'Buscar productos...'
     
     const handleSearch = (value: string) => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
       
       debounceRef.current = setTimeout(() => {
         const isFavorites = pathname.includes('/admin/favorites')
-        const basePath = isFavorites ? '/admin/favorites' : '/admin/products'
+        const isUsers = pathname.includes('/admin/users')
+        const basePath = isFavorites ? '/admin/favorites' : isUsers ? '/admin/users' : '/admin/products'
  
         if(!value.trim()){ 
           navigate(basePath)
         } else {
           navigate(`${basePath}?query=${value.trim()}`)
         }
-      }, 500)
+      }, 600)
     }
 
   return (
@@ -35,7 +37,7 @@ export const AdminHeader: React.FC = () => {
             <input
               onChange={(e) => handleSearch(e.target.value)}
               type="text"
-              placeholder="Search..."
+              placeholder={placeholder}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>

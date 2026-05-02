@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useUsers } from "../hooks/useUsers"
+import { Separator } from "@/components/ui/separator"
 
 interface EditUserModalProps {
   user: AdminUser | null
@@ -95,13 +96,14 @@ export const EditUserModal = ({ user, onClose }: EditUserModalProps) => {
 
   return (
     <Dialog open={!!user} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent className="sm:max-w-md max-h-11/12 overflow-y-auto">
+      <DialogContent className="sm:max-w-md max-h-11/12 overflow-y-auto p-5 custom-scrollbar">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Pencil className="h-4 w-4" />
             Editar usuario
           </DialogTitle>
         </DialogHeader>
+        <Separator/>
 
         <form onSubmit={onSubmit} className="space-y-4 py-2">
           <div className="space-y-1.5">

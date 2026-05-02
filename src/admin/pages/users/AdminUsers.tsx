@@ -9,6 +9,7 @@ import { useState } from "react"
 import type { AdminUser } from "@/admin/action/getUsers.action"
 import { OrdersModal } from "@/admin/components/OrdersModal"
 import { EditUserModal } from "@/admin/components/EditUserModal"
+import { CustomPagination } from "@/components/custom/CustomPagination"
 
 
 export const AdminUsers = () => {
@@ -46,7 +47,7 @@ export const AdminUsers = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {users.users.map((user) => (
             <TableRow key={user.id}>
               {/* Avatar + name */}
               <TableCell>
@@ -125,6 +126,9 @@ export const AdminUsers = () => {
           ))}
         </TableBody>
       </Table>
+      <CustomPagination
+              totalPages={users?.pages || 0}
+        />
 
       {/* Modals */}
       <OrdersModal user={ordersUser} onClose={() => setOrdersUser(null)} />
