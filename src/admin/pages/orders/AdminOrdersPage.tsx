@@ -25,29 +25,25 @@ export const AdminOrdersPage = () => {
 
   const { data: payments, isLoading, isError } = useAllOrders()
   const [selected, setSelected] = useState<AdminPayment | null>(null)
-  const [statusFilter, setStatusFilter] = useState<string | null>(null)
-  const currentStatus = searchParams.get('status')?.split(',') || []
+  const currentStatus = searchParams.get("status") || "all"
 
   const statuses = [
+    {id: "all", label: "Todos", color: "bg-gray-100 text-gray-600"},
     {id: "approved", label: "Aprobado", color: "bg-green-100 text-green-700"},
     {id: "pending", label: "Pendiente", color: "bg-yellow-100 text-yellow-700"},
     {id: "failed", label: "Fallido", color: "bg-red-100 text-red-700"},
     {id: "cancelled", label: "Cancelado", color: "bg-gray-100 text-gray-600"}
   ]
 
-  const handleStatusChange = (status: string) => {
-    const newStatus = currentStatus.includes(status)
-      ? currentStatus.filter(s => s !== status)
-      : [...currentStatus, status]
-
-    searchParams.set('page', '1') // Resetear a la página 1 al cambiar el filtro
-    searchParams.set('status', newStatus.join(','))
-    setSearchParams(searchParams)
-    if(newStatus.length === 0) {
-      searchParams.delete('status')
-      setSearchParams(searchParams)
-      searchParams.set('page', '1')
+  const handleStatusChange = (value: string) => {
+    const newParams = new URLSearchParams(searchParams)
+    if (value === "all") {
+      newParams.delete("status")
+    } else {
+      newParams.set("status", value)
     }
+    newParams.delete("page")
+    setSearchParams(newParams)
   }
   
 
@@ -72,21 +68,23 @@ export const AdminOrdersPage = () => {
   return (
     <>
       <AdminTitle
-        title="Órdenes Totales"
+        title="Órdenes"
         subtitle="Aquí puedes ver todas las órdenes realizadas en la tienda"
       />
 
       {/* Filter Buttons */}
       <div className="mb-6 flex flex-wrap gap-2">
         {statuses.map((status) => {
-          const count = payments.payments.filter((p) => p.status === status.id).length
+          const count = status.id === "all"
+            ? payments.payments.length
+            : payments.payments.filter((p) => p.status === status.id).length
           return (
             <Button
               key={status.id}
-              variant={statusFilter === status.id ? "default" : "outline"}
+              variant={currentStatus === status.id ? "default" : "outline"}
               size="sm"
               onClick={() => handleStatusChange(status.id)}
-              className={`${statusFilter === status.id ? status.color : ""}`}
+              className={`${currentStatus === status.id ? status.color : ""}`}
             >
               {status.label} ({count})
             </Button>

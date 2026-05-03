@@ -20,7 +20,7 @@ export const useAllOrders = () => {
   const limit = searchParams.get('limit') || 9
   const page = searchParams.get('page') || 1
   const offset = (Number(page) -1 ) * Number(limit)
-  const status = searchParams.get('status') || ''
+  const status = searchParams.get("status") || "all";
   
   return useQuery({
     queryKey: ["admin-all-payments", {limit, offset, query: q, status}],
@@ -28,7 +28,7 @@ export const useAllOrders = () => {
       query: q || undefined, 
       limit: isNaN(+limit) ? 0 : limit, 
       offset: isNaN(offset) ? 0 : offset,
-      status: status || undefined
+      status: status !== "all" ? status : undefined,
     }),
     retry: false,
     staleTime: 1000 * 60 * 5,

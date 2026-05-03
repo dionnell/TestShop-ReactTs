@@ -21,7 +21,7 @@ export const getAllOrdersAction = async (options: Options): Promise<GetAdminOrde
     params: {
       limit,
       offset,
-      status,
+      status: status && status !== "all" ? status : undefined,
       q: query
     }
   });
