@@ -1,6 +1,6 @@
 import { testShopApi } from "@/api/testShopApi";
 
-interface Options {
+export interface Options {
     limit? : number | string,
     offset? : number | string,
     query? : string,

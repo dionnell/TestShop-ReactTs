@@ -2,28 +2,12 @@ import { ActivityFeed } from "@/admin/components/ActivityFeed";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import  { Chart } from "@/admin/components/Chart";
 import { StatCard } from "@/admin/components/StatCard";
+import { useAllOrders } from "@/admin/hooks/useAdminPayment";
 import { useUsers } from "@/admin/hooks/useUsers";
+import { formatCurrency } from "@/lib/currency-formatter";
 import { useFavoritesCount } from "@/shop/hooks/useFavorites";
 import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "lucide-react";
 
-const stats = [
-    {
-      title: 'Revenue',
-      value: '$84,230',
-      change: '+8.2% from last month',
-      changeType: 'positive' as const,
-      icon: DollarSign,
-      color: 'bg-green-500'
-    },
-    {
-      title: 'Orders',
-      value: '1,429',
-      change: '-2.4% from last month',
-      changeType: 'negative' as const,
-      icon: ShoppingCart,
-      color: 'bg-purple-500'
-    },
-  ];
 
   const chartData = [
     { label: 'Desktop', value: 65 },
@@ -43,6 +27,14 @@ export const DashboardPage = () => {
 
   const { data: users } = useUsers()
   const {data: favoritesData} = useFavoritesCount()
+  const { data: paymentsData } = useAllOrders()
+
+  const sumPayments = paymentsData?.payments.reduce((sum, payment) => {
+    if(payment.status === 'approved') {
+      return sum + payment.amount
+    }
+    return sum
+  }, 0)
 
   return (
     <>
@@ -55,9 +47,6 @@ export const DashboardPage = () => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
         <StatCard 
           title="Total Users"
           value={users?.users.length.toString() || '0'}
@@ -66,7 +55,22 @@ export const DashboardPage = () => {
           icon={Users}
           color="bg-blue-500"
         />
-
+        <StatCard 
+          title="Total Orders"
+          value={paymentsData?.payments.filter(pay => pay.status === 'approved').length.toString() || '0'}
+          change="-2.4% from last month"
+          changeType="negative"
+          icon={ShoppingCart}
+          color="bg-purple-500"
+        />
+        <StatCard 
+          title="Total Revenue"
+          value={formatCurrency(sumPayments || 0, "CLP")}
+          change="+8.2% from last month"
+          changeType="positive"
+          icon={DollarSign}
+          color="bg-green-500"
+        />
         <StatCard 
           title="Favorites"
           value={favoritesData?.favorites.filter(fav => fav.favoriteCount > 0).length.toString() || '0'}

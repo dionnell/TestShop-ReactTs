@@ -22,6 +22,7 @@ import { PaymentSuccessPage } from "./shop/components/Paymentsuccesspage";
 import { PaymentFailedPage } from "./shop/components/Paymentfailedpage";
 import { HistoryUser } from "./shop/pages/profile/HistoryUser";
 import { AdminUsers } from "./admin/pages/users/AdminUsers";
+import { AdminOrdersPage } from "./admin/pages/orders/AdminOrdersPage";
 
 const AuthLayout = lazy(() => import('./auth/layouts/AuthLayout'))
 const AdminLayout = lazy(() => import('./admin/layouts/AdminLayout'))
@@ -95,6 +96,10 @@ const appRouter = createHashRouter([
             {
                 path: 'users',
                 element: <AdminUsers/>
+            },
+            {
+                path: 'orders',
+                element: <AdminOrdersPage/>
             }
         ]
     },

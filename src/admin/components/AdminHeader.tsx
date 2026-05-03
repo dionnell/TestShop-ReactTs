@@ -9,7 +9,10 @@ export const AdminHeader: React.FC = () => {
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     const navigate = useNavigate()
     const { pathname } = useLocation()
-    const placeholder = pathname.includes('/admin/users') ? 'Buscar usuarios...' : pathname.includes('/admin/favorites') ? 'Buscar productos favoritos...' : 'Buscar productos...'
+    const placeholder = pathname.includes('/admin/users') ? 'Buscar usuarios...' 
+                        : pathname.includes('/admin/favorites') ? 'Buscar productos favoritos...' 
+                        : pathname.includes('/admin/orders') ? 'Buscar órdenes por email o full name...' 
+                        : 'Buscar productos...'
     
     const handleSearch = (value: string) => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -17,7 +20,11 @@ export const AdminHeader: React.FC = () => {
       debounceRef.current = setTimeout(() => {
         const isFavorites = pathname.includes('/admin/favorites')
         const isUsers = pathname.includes('/admin/users')
-        const basePath = isFavorites ? '/admin/favorites' : isUsers ? '/admin/users' : '/admin/products'
+        const isOrders = pathname.includes('/admin/orders')
+        const basePath = isFavorites ? '/admin/favorites' 
+                        : isUsers ? '/admin/users' 
+                        : isOrders ? '/admin/orders' 
+                        : '/admin/products'
  
         if(!value.trim()){ 
           navigate(basePath)
