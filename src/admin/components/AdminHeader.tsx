@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Search, Bell, MessageSquare, Settings, Menu, X, Home, BarChart3, Heart, Users, ShoppingCart, FileText } from 'lucide-react';
+import { Search, Bell, Menu, X, Home, BarChart3, Heart, Users, ShoppingCart, FileText } from 'lucide-react';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { useLocation, useNavigate, Link } from 'react-router';
 import { CustomLogo } from '@/components/custom/CustomLogo';
@@ -52,8 +52,8 @@ export const AdminHeader: React.FC = () => {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-4 h-18">
-        <div className="flex items-center gap-3">
+      <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-4 h-17">
+        <div className="flex items-center gap-3 md:justify-between">
 
           {/* Logo + burger — solo en md y menores */}
           <div className="flex items-center gap-0.5 md:hidden shrink-0">
@@ -67,7 +67,7 @@ export const AdminHeader: React.FC = () => {
           </div>
 
           {/* Search */}
-          <div className="flex-1 max-w-md">
+          <div className="flex-1 max-w-md ">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
               <input
@@ -80,16 +80,10 @@ export const AdminHeader: React.FC = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+          <div className="flex items-end gap-3 shrink-0">
+            <button className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors md:px-3">
               <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full" />
-            </button>
-            <button className="hidden sm:flex p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-              <MessageSquare size={20} />
-            </button>
-            <button className="hidden sm:flex p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-              <Settings size={20} />
+              <span className="absolute -top-1 right-1 w-3 h-3 bg-red-500 rounded-full " />
             </button>
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm cursor-pointer">
               {user?.fullName?.substring(0, 2).toUpperCase() || 'U'}
