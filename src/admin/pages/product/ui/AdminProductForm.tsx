@@ -119,17 +119,17 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="min-h-screen bg-slate-50">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center max-md:grid max-md:grid-cols-1 max-md:gap-2">
         <AdminTitle title={title} subtitle={subTitle} />
-        <div className="flex justify-end mb-10 gap-4">
-          <Button type='button' variant="outline">
-            <Link to="/admin/products" className="flex items-center gap-2">
+        <div className="flex justify-end mb-10 gap-4 max-md:grid max-md:grid-cols-1 max-md:gap-2">
+          <Button type='button' variant="outline" className="max-md:w-3xs">
+            <Link to="/admin/products" className="flex items-center gap-2 w-auto">
               <X className="w-4 h-4" />
               Cancelar
             </Link>
           </Button>
 
-          <Button type='submit' disabled={isPosting}>
+          <Button type='submit' disabled={isPosting} className="max-md:w-3xs">
             <SaveAll className="w-4 h-4" />
             {isPosting ? 'Guardando...' : 'Guardar cambios'}
           </Button>
