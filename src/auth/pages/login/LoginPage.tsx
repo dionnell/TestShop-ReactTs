@@ -25,9 +25,9 @@ export const LoginPage = () => {
 
     if(isValid){
       navigate('/')
-      return toast.success('Bienvenido a la aplicacion')
+      return toast.success('Bienvenido a la aplicacion', { position: 'top-right', richColors: true })
     } else {
-      toast.error('Correo o Contraseña incorrectos')
+      toast.error('Correo o Contraseña incorrectos', { position: 'top-center', richColors: true })
     }
     
     setIsPosting(false)

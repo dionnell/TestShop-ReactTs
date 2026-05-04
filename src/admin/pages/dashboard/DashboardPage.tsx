@@ -2,8 +2,8 @@ import { ActivityFeed } from "@/admin/components/ActivityFeed";
 import { AdminTitle } from "@/admin/components/AdminTitle";
 import  { Chart } from "@/admin/components/Chart";
 import { StatCard } from "@/admin/components/StatCard";
-import { useAllOrders } from "@/admin/hooks/useAdminPayment";
-import { useUsers } from "@/admin/hooks/useUsers";
+import { useDashboardStatsPayment } from "@/admin/hooks/useAdminPayment";
+import { useDashboardStatsUser } from "@/admin/hooks/useUsers";
 import { formatCurrency } from "@/lib/currency-formatter";
 import { useFavoritesCount } from "@/shop/hooks/useFavorites";
 import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "lucide-react";
@@ -25,9 +25,9 @@ import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "luci
 
 export const DashboardPage = () => {
 
-  const { data: users, isLoading: usersLoading } = useUsers()
+  const { data: users, isLoading: usersLoading } = useDashboardStatsUser()
   const {data: favoritesData, isLoading: favoritesLoading} = useFavoritesCount()
-  const { data: paymentsData, isLoading: paymentsLoading } = useAllOrders()
+  const { data: paymentsData, isLoading: paymentsLoading } = useDashboardStatsPayment()
 
   const sumPayments = paymentsData?.payments.reduce((sum, payment) => {
     if(payment.status === 'approved') {

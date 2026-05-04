@@ -38,3 +38,13 @@ export const useUsers = () => {
     updateUserError: updateMutation.error,
   };
 };
+
+// Hook exclusivo para el dashboard — sin filtros ni paginación
+export const useDashboardStatsUser = () => {
+  return useQuery({
+    queryKey: ["admin-users"],
+    queryFn: () => getUsersAction({ limit: 9999, offset: 0 }),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+  });
+};

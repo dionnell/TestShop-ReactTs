@@ -51,3 +51,13 @@ export const useAllOrders = () => {
     cancellingId: cancelMutation.variables,
   };
 };
+
+// Hook exclusivo para el dashboard — sin filtros ni paginación
+export const useDashboardStatsPayment = () => {
+  return useQuery({
+    queryKey: ["dashboard-stats"],
+    queryFn: () => getAllOrdersAction({ limit: 9999, offset: 0 }),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+  });
+};
