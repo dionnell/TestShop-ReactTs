@@ -84,7 +84,7 @@ export const AdminProductsPage = () => {
                     <Link
                       to={`/admin/products/${product.id}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="font-semibold hover:text-blue-500 hover:underline line-clamp-2 max-sm:text-ellipsis max-sm:w-[140px]"
+                      className="font-semibold hover:text-blue-500 hover:underline line-clamp-2 max-sm:text-ellipsis max-sm:w-[120px] max-sm:text-xs"
                     >
                       {product.title}
                     </Link>
