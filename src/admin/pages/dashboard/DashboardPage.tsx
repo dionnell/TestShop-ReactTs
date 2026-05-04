@@ -4,7 +4,6 @@ import  { Chart } from "@/admin/components/Chart";
 import { StatCard } from "@/admin/components/StatCard";
 import { useAllOrders } from "@/admin/hooks/useAdminPayment";
 import { useUsers } from "@/admin/hooks/useUsers";
-import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading";
 import { formatCurrency } from "@/lib/currency-formatter";
 import { useFavoritesCount } from "@/shop/hooks/useFavorites";
 import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "lucide-react";
