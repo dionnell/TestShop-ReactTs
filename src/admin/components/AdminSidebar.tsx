@@ -12,6 +12,7 @@ import {
 import { CustomLogo } from '@/components/custom/CustomLogo';
 import { Link, useLocation } from 'react-router';
 import { useAuthStore } from '@/auth/store/auth.store';
+import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -42,9 +43,10 @@ export const AdminSidebar: React.FC<SidebarProps> = ({ isCollapsed, onToggle }) 
   }
 
   return (
-    <div className={`bg-white border-r border-gray-200 transition-all duration-300 ease-in-out h-18 ${
-      isCollapsed ? 'w-18' : 'w-64'
-    } flex flex-col`}>
+    <div className={cn(
+      "hidden md:flex bg-white border-r border-gray-200 transition-all duration-300 ease-in-out flex-col",
+      isCollapsed ? "w-18" : "w-64"
+    )}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200 flex items-center justify-between h-18">
         {!isCollapsed && (
