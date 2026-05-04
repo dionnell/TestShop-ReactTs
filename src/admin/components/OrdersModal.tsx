@@ -29,7 +29,7 @@ export const OrdersModal = ({ user, onClose }: OrdersModalProps) => {
 
   return (
     <Dialog open={!!user} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar p-4 sm:p-6">
+      <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar p-4 sm:p-6 max-sm:w-xs">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
             <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
@@ -136,7 +136,7 @@ export const OrdersModal = ({ user, onClose }: OrdersModalProps) => {
 
                         {/* Info */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs sm:text-sm font-medium text-gray-800 truncate">
+                          <p className="text-xs sm:text-sm font-medium text-gray-800 truncate max-sm:w-[150px]">
                             {item.product?.title ?? (
                               <span className="italic text-gray-400">Producto eliminado</span>
                             )}

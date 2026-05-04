@@ -24,7 +24,7 @@ export const OrderDetailModal = ({
 
   return (
     <Dialog open={!!payment} onOpenChange={(open) => { if (!open) onClose() }}>
-      <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+      <DialogContent className="w-full max-w-xl max-h-[90vh] overflow-y-auto overflow-x-auto custom-scrollbar p-3 sm:p-6 max-sm:w-xs">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
             <Package className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />
@@ -35,8 +35,8 @@ export const OrderDetailModal = ({
         <div className="rounded-xl border overflow-hidden">
 
           {/* Header */}
-          <div className="px-3 sm:px-4 py-2.5 bg-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1.5">
-            <div className="flex items-center gap-2 flex-wrap">
+          <div className="px-3 sm:px-4 py-2.5 bg-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 max-md:grid-cols-1 max-md:gap-2">
+            <div className="flex items-center gap-1.5 flex-wrap">
               <span className="text-xs text-gray-500 font-medium">
                 Orden:{" "}
                 <span className="font-mono text-gray-700 break-all">
@@ -81,7 +81,7 @@ export const OrderDetailModal = ({
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs sm:text-sm font-medium text-gray-800 truncate">
+                  <p className="text-xs sm:text-sm font-medium text-gray-800 truncate max-sm:w-[150px]">
                     {item.product?.title ?? (
                       <span className="italic text-gray-400">Producto eliminado</span>
                     )}
