@@ -168,7 +168,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
                   }
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
                       Precio ($)
@@ -277,7 +277,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
             </div>
 
             {/* Sizes */}
-            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
               <h2 className="text-xl font-semibold text-slate-800 mb-6">
                 Tallas disponibles
               </h2>
@@ -331,7 +331,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
             </div>
 
             {/* Tags */}
-            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
               <h2 className="text-xl font-semibold text-slate-800 mb-6">
                 Etiquetas
               </h2>
@@ -385,7 +385,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Product Images */}
-            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
               <h2 className="text-xl font-semibold text-slate-800 mb-6">
                 Imágenes del producto
               </h2>
@@ -488,7 +488,7 @@ export const AdminProductForm = ({ title, subTitle, product, onSubmit, isPosting
             </div>
 
             {/* Product Status */}
-            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-4">
               <h2 className="text-xl font-semibold text-slate-800 mb-6">
                 Estado del producto
               </h2>
