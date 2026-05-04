@@ -80,7 +80,7 @@ export const AdminUsers = () => {
                           {user.fullName.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase()}
                         </span>
                       </div>
-                      <span className="font-medium text-gray-900 truncate max-w-[80px] sm:max-w-[140px] max-sm:text-sm">
+                      <span className="font-medium text-gray-900 truncate max-w-[70px] sm:max-w-[140px] max-sm:text-sm">
                         {user.fullName}
                       </span>
                     </div>
