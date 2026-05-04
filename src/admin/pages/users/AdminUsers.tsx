@@ -75,12 +75,12 @@ export const AdminUsers = () => {
                   {/* Nombre */}
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <div className="h-8 w-8 rounded-full bg-gray-900 flex items-center justify-center shrink-0">
+                      <div className="h-8 w-8 rounded-full bg-gray-900 flex items-center justify-center shrink-0 max-sm:h-6 max-sm:w-6">
                         <span className="text-white text-xs font-bold">
                           {user.fullName.split(" ").map((n) => n[0]).slice(0, 2).join("").toUpperCase()}
                         </span>
                       </div>
-                      <span className="font-medium text-gray-900 truncate max-w-[90px] sm:max-w-[140px] ">
+                      <span className="font-medium text-gray-900 truncate max-w-[80px] sm:max-w-[140px] ">
                         {user.fullName}
                       </span>
                     </div>

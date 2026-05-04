@@ -140,7 +140,7 @@ export const AdminOrdersPage = () => {
                       {/* Numero de orden */}
                       <TableCell className="font-mono text-xs text-gray-700">
                         <span className="hidden sm:inline">{payment.buyOrder}</span>
-                        <span className="sm:hidden">{payment.buyOrder.slice(0, 8)}…</span>
+                        <span className="sm:hidden">{payment.buyOrder.slice(0, 6)}…</span>
                       </TableCell>
 
                       {/* Estado */}  

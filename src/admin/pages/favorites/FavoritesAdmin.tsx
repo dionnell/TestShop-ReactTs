@@ -80,7 +80,7 @@ export const FavoritesAdmin = () => {
                     <Link
                       to={`/admin/products/${item.id}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="font-semibold hover:text-blue-500 hover:underline line-clamp-2 max-sm:text-ellipsis max-sm:w-[140px]"
+                      className="font-semibold hover:text-blue-500 hover:underline line-clamp-2 max-sm:text-ellipsis max-sm:w-[120px]"
                     >
                       {item.product.title}
                     </Link>
