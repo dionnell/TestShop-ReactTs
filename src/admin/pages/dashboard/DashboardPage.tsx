@@ -4,6 +4,7 @@ import  { Chart } from "@/admin/components/Chart";
 import { StatCard } from "@/admin/components/StatCard";
 import { useAllOrders } from "@/admin/hooks/useAdminPayment";
 import { useUsers } from "@/admin/hooks/useUsers";
+import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoading";
 import { formatCurrency } from "@/lib/currency-formatter";
 import { useFavoritesCount } from "@/shop/hooks/useFavorites";
 import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "lucide-react";
@@ -25,9 +26,9 @@ import { Users, DollarSign, ShoppingCart, HeartIcon, Eye, BarChart3 } from "luci
 
 export const DashboardPage = () => {
 
-  const { data: users } = useUsers()
-  const {data: favoritesData} = useFavoritesCount()
-  const { data: paymentsData } = useAllOrders()
+  const { data: users, isLoading: usersLoading } = useUsers()
+  const {data: favoritesData, isLoading: favoritesLoading} = useFavoritesCount()
+  const { data: paymentsData, isLoading: paymentsLoading } = useAllOrders()
 
   const sumPayments = paymentsData?.payments.reduce((sum, payment) => {
     if(payment.status === 'approved') {
@@ -35,6 +36,11 @@ export const DashboardPage = () => {
     }
     return sum
   }, 0)
+
+  const TotalUsers = (usersLoading) ? 'cargando...' : users?.users.length.toString() || '0'
+  const TotalOrders = (paymentsLoading) ? 'cargando...' : paymentsData?.payments.filter(pay => pay.status === 'approved').length.toString() || '0'
+  const TotalRevenue = (paymentsLoading) ? 'cargando...' : formatCurrency(sumPayments || 0, "CLP")
+  const TotalFavorites = (favoritesLoading) ? 'cargando...' : favoritesData?.favorites.filter(fav => fav.favoriteCount > 0).length.toString() || '0'
 
   return (
     <>
@@ -49,7 +55,7 @@ export const DashboardPage = () => {
         
         <StatCard 
           title="Total Users"
-          value={users?.users.length.toString() || '0'}
+          value={TotalUsers}
           change="+12.5% from last month"
           changeType="positive"
           icon={Users}
@@ -57,7 +63,7 @@ export const DashboardPage = () => {
         />
         <StatCard 
           title="Total Orders"
-          value={paymentsData?.payments.filter(pay => pay.status === 'approved').length.toString() || '0'}
+          value={TotalOrders}
           change="-2.4% from last month"
           changeType="negative"
           icon={ShoppingCart}
@@ -65,7 +71,7 @@ export const DashboardPage = () => {
         />
         <StatCard 
           title="Total Revenue"
-          value={formatCurrency(sumPayments || 0, "CLP")}
+          value={TotalRevenue}
           change="+8.2% from last month"
           changeType="positive"
           icon={DollarSign}
@@ -73,7 +79,7 @@ export const DashboardPage = () => {
         />
         <StatCard 
           title="Favorites"
-          value={favoritesData?.favorites.filter(fav => fav.favoriteCount > 0).length.toString() || '0'}
+          value={TotalFavorites}
           change="+12.5% from last month"
           changeType="positive"
           icon={HeartIcon}
