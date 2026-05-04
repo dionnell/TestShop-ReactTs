@@ -47,10 +47,10 @@ export const CustomPagination = ({ totalPages }: Props) => {
 
 
   return (
-    <div className="flex items-center justify-center space-x-2 gap-1 flex-wrap">
+    <div className="flex items-center justify-center space-x-1 gap-1 flex-wrap">
       <Button
         variant="outline"
-        size="sm"
+        size={isMobile ? "xs" : "sm"}
         disabled={page === 1}
         hidden={totalPages === 1 || (isMobile && totalPages <= 3)}
         onClick={() => handlePageChange(page - 1)}
@@ -71,7 +71,7 @@ export const CustomPagination = ({ totalPages }: Props) => {
           <Button
             key={p}
             variant={page === p ? 'default' : 'outline'}
-            size="sm"
+            size={isMobile ? "xs" : "sm"}
             onClick={() => handlePageChange(p)}
           >
             {p}
@@ -81,7 +81,7 @@ export const CustomPagination = ({ totalPages }: Props) => {
 
       <Button
         variant="outline"
-        size="sm"
+        size={isMobile ? "xs" : "sm"}
         disabled={page === totalPages}
         hidden={totalPages === 1 || (isMobile && totalPages <= 3)}
         onClick={() => handlePageChange(page + 1)}
