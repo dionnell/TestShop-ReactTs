@@ -104,9 +104,9 @@ export const AdminOrdersPage = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-px"></TableHead>  {/* chevron */}
-                <TableHead>Orden</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Estado</TableHead>
+                <TableHead className="max-sm:w-px">Orden</TableHead>
+                <TableHead className="max-sm:w-px">Estado</TableHead>
+                <TableHead className="max-sm:w-px">Total</TableHead>
                 <TableHead className="hidden md:table-cell">Usuario</TableHead>
                 <TableHead className="hidden lg:table-cell">Productos</TableHead>
                 <TableHead className="hidden md:table-cell">Fecha</TableHead>

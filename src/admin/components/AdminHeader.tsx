@@ -52,11 +52,11 @@ export const AdminHeader: React.FC = () => {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-4 h-18">
+      <header className="bg-white border-b border-gray-200 px-3 md:px-6 py-4 h-18">
         <div className="flex items-center gap-3">
 
           {/* Logo + burger — solo en md y menores */}
-          <div className="flex items-center gap-1 md:hidden shrink-0">
+          <div className="flex items-center gap-0.5 md:hidden shrink-0">
             <CustomLogo subtitle='S' />
             <button
               onClick={() => setMenuOpen(prev => !prev)}
