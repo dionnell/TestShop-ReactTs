@@ -11,15 +11,24 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 - **Carrito de compras** con control de cantidad, eliminación de items y resumen de compra.
 - **Favoritos** para guardar productos de interés y gestionarlos desde el perfil.
 - **Perfil de usuario** con edición de nombre, teléfono y dirección, y cambio de contraseña.
+- **Historial de compras** con detalle de órdenes aprobadas e items comprados.
 - **Pago con Transbank Webpay Plus** en ambiente de integración, con redirección a página de éxito o fallo según resultado.
 - **Autenticación** con registro, login y verificación de sesión automática con JWT.
+- **Reactivación automática de cuenta**: si un usuario con cuenta desactivada vuelve a iniciar sesión con sus credenciales correctas, su cuenta se reactiva automáticamente.
+- **Registro con validación**: formulario de registro con react-hook-form, indicadores visuales de requisitos de contraseña (mayúscula, minúscula, número, mínimo 6 caracteres) y confirmación de contraseña.
 
 ### Panel de Administración
-- **Dashboard** con métricas generales del negocio.
-- **Gestión de productos**: ver, crear, editar con soporte para imágenes (drag & drop), tallas y etiquetas.
-- **Favoritos admin**: tabla con todos los productos y la cantidad de usuarios que los tienen en favoritos, ordenados de mayor a menor.
-- **Búsqueda contextual** en el header: busca productos en `/admin/products` y favoritos en `/admin/favorites`.
-- **Sidebar colapsable** con navegación entre secciones.
+- **Dashboard** con métricas reales del negocio: total de usuarios, órdenes aprobadas, ingresos totales y productos en favoritos.
+- **Gestión de productos**: ver, crear y editar con soporte para imágenes (drag & drop), tallas y etiquetas. Tabla responsive con filas colapsables en móvil.
+- **Favoritos admin**: tabla con todos los productos y la cantidad de usuarios que los tienen en favoritos, ordenados de mayor a menor. Responsive con filas colapsables.
+- **Gestión de usuarios**: tabla con todos los usuarios registrados, con opciones para editar datos, roles, estado y contraseña, y ver sus órdenes. Responsive con filas colapsables.
+- **Gestión de órdenes**: tabla con todas las órdenes de la tienda con filtros por estado (aprobado, pendiente, fallido, cancelado), búsqueda por email o nombre, y paginación. Responsive con filas colapsables en móvil que muestran el detalle completo.
+- **Cancelación de órdenes**: los administradores pueden cancelar órdenes con estado aprobado desde la tabla de órdenes, con confirmación mediante AlertDialog.
+- **Modal de detalle de orden**: vista completa de una orden con sus items, precios e imágenes. Responsive.
+- **Modal de órdenes por usuario**: historial de compras de un usuario específico con filtro por estado. Responsive.
+- **Búsqueda contextual** en el header: busca en la sección activa (productos, favoritos, usuarios u órdenes).
+- **Sidebar colapsable** visible solo en pantallas medianas y grandes.
+- **Header responsive con menú desplegable**: en móvil muestra el logo y un menú hamburguesa con la misma navegación del sidebar, incluyendo datos del usuario al pie.
 
 ## Tecnologías utilizadas
 
@@ -31,9 +40,9 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 - **React Router v7**: manejo de rutas con hash router, rutas protegidas por rol y rutas anidadas.
 - **TanStack React Query v5**: sincronización y cacheo de datos remotos con soporte para mutations.
 - **Zustand**: estado global liviano para autenticación y datos del usuario.
-- **React Hook Form**: gestión de formularios con validación.
+- **React Hook Form**: gestión de formularios con validación (registro, edición de perfil, cambio de contraseña, edición de usuarios admin).
 - **Axios**: cliente HTTP con interceptores para manejo automático del token JWT.
-- **Radix UI / shadcn**: componentes accesibles como diálogos, dropdowns, tablas y alertas.
+- **Radix UI / shadcn**: componentes accesibles como diálogos, dropdowns, tablas, alertas y selects.
 - **lucide-react**: iconos SVG simples y consistentes.
 - **sonner**: notificaciones toast con soporte para colores y posición.
 
@@ -58,6 +67,21 @@ src/
 ├── interface/   # Tipos e interfaces TypeScript
 └── lib/         # Utilidades compartidas
 ```
+
+## Endpoints destacados del backend
+
+| Método | Endpoint | Descripción | Rol |
+|--------|----------|-------------|-----|
+| POST | `/auth/register` | Registro de usuario | Público |
+| POST | `/auth/login` | Login (reactiva cuenta si estaba inactiva) | Público |
+| PATCH | `/auth/profile` | Editar perfil | Usuario |
+| PATCH | `/auth/change-password` | Cambiar contraseña | Usuario |
+| GET | `/auth/users` | Listar usuarios con paginación y búsqueda | Admin |
+| PATCH | `/auth/users/:id` | Editar usuario (roles, estado, contraseña) | Admin |
+| GET | `/payments/admin/all` | Listar todas las órdenes con filtros | Admin |
+| PATCH | `/payments/:id/cancel` | Cancelar orden aprobada | Admin |
+| GET | `/payments/my-payments` | Historial de compras del usuario | Usuario |
+| GET | `/favorites/admin/group` | Favoritos agrupados por producto | Admin |
 
 ## Alojamiento
 
