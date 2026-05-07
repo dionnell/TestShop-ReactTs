@@ -8,7 +8,8 @@ import { useAuthStore } from "@/auth/store/auth.store";
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { RelatedProducts } from "@/shop/components/RelatedProducts";
+//import { RelatedProducts } from "@/shop/components/RelatedProducts";
+import { RelatedProductsWithIA } from "@/shop/components/RelatedProductsWithIA"
 import { useFavorites } from "@/shop/hooks/useFavorites";
 import { useCart } from "@/shop/hooks/useCart"
 
@@ -225,7 +226,8 @@ export const ProductPage = () => {
       <hr className="border-gray-200 my-1" />
 
       <div className="border-t border-gray-100 mt-6">
-        <RelatedProducts gender={product.gender ?? ""} currentSlug={idSlug ?? ""} />
+        {/*<RelatedProducts gender={product.gender ?? ""} currentSlug={idSlug ?? ""} />*/}
+        <RelatedProductsWithIA productId={product.id} currentSlug={idSlug ?? ""} />
       </div>
     </div>
   )
