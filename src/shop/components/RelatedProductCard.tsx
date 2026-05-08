@@ -12,7 +12,7 @@ export const RelatedProductCard = ({ name, price, image, category, slug }: Relat
 
   return (
     <article
-      className="group cursor-pointer flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg/10 transition-shadow duration-200 w-64 shrink-0"
+      className="group cursor-pointer flex flex-col bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg/10 transition-shadow duration-200 w-64 shrink-0 max-sm:w-40"
     >
       {/* Image */}
       <div className="relative bg-gray-50 aspect-square overflow-hidden">
@@ -26,7 +26,7 @@ export const RelatedProductCard = ({ name, price, image, category, slug }: Relat
       {/* Info */}
       <Link to={`/product/${slug}`}>
         <div className="flex flex-col gap-1 p-3 flex-1">
-          <p className="text-sm text-gray-800 font-medium line-clamp-2 leading-snug">
+          <p className="text-sm text-gray-800 font-medium line-clamp-2 leading-snug max-sm:text-xs">
             {name}
           </p>
     
