@@ -16,6 +16,7 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 - **Autenticación** con registro, login y verificación de sesión automática con JWT.
 - **Reactivación automática de cuenta**: si un usuario con cuenta desactivada vuelve a iniciar sesión con sus credenciales correctas, su cuenta se reactiva automáticamente.
 - **Registro con validación**: formulario de registro con react-hook-form, indicadores visuales de requisitos de contraseña (mayúscula, minúscula, número, mínimo 6 caracteres) y confirmación de contraseña.
+- **Productos relacionados con IA**: en la página de detalle de producto se muestran sugerencias generadas por GPT-4o-mini, ordenadas por relevancia semántica según tags, género y rango de precio. Incluye badge "Sugerido por IA" para transparencia y fallback automático por tags si el servicio no está disponible.
 
 ### Panel de Administración
 - **Dashboard** con métricas reales del negocio: total de usuarios, órdenes aprobadas, ingresos totales y productos en favoritos.
@@ -54,6 +55,40 @@ TestShop es una tienda online de demostración construida con React y TypeScript
 - **Multer**: manejo de subida de archivos para imágenes de productos.
 - **Swagger**: documentación automática de la API disponible en `/api`.
 - **bcrypt**: encriptación segura de contraseñas.
+- **OpenAI SDK (GPT-4o-mini)**: generación de recomendaciones de productos relacionados mediante análisis semántico de tags, género y precio.
+
+## Inteligencia Artificial: Productos Relacionados
+
+La sección "También podría interesarte" en la página de detalle de producto usa **GPT-4o-mini** para recomendar productos relevantes de forma semántica.
+
+### Cómo funciona
+
+1. El backend recibe el ID del producto actual y obtiene todos los productos del catálogo.
+2. Se construye un prompt con los metadatos del producto actual (título, género, tags, precio) y los candidatos disponibles.
+3. GPT-4o-mini selecciona y ordena los IDs más relevantes según:
+   - Tags compartidos (criterio principal)
+   - Mismo género o unisex
+   - Rango de precio similar (dentro del 50% del precio actual)
+   - Categoría de ropa inferida desde el título
+4. El backend retorna los productos completos en el orden sugerido por la IA.
+
+### Fallback automático
+
+Si la llamada a OpenAI falla (timeout, error de cuota, etc.), el servicio cae automáticamente en un algoritmo de fallback basado en conteo de tags compartidos, garantizando que el usuario siempre vea sugerencias.
+
+### Caché en el frontend
+
+Las recomendaciones se cachean 10 minutos con React Query (`staleTime: 1000 * 60 * 10`) para evitar llamadas innecesarias a la API de OpenAI y mejorar la experiencia de navegación.
+
+### Transparencia hacia el usuario
+
+El carrusel incluye un badge **"Sugerido por IA"** con ícono de destellos para que el usuario sepa que las recomendaciones son generadas por inteligencia artificial.
+
+### Variables de entorno requeridas (backend)
+
+```env
+OPENAI_API_KEY=sk-...
+```
 
 ## Estructura principal
 
@@ -82,6 +117,7 @@ src/
 | PATCH | `/payments/:id/cancel` | Cancelar orden aprobada | Admin |
 | GET | `/payments/my-payments` | Historial de compras del usuario | Usuario |
 | GET | `/favorites/admin/group` | Favoritos agrupados por producto | Admin |
+| GET | `/products/:id/related` | Productos relacionados generados por IA | Público |
 
 ## Alojamiento
 
