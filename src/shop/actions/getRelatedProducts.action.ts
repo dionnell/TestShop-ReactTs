@@ -1,22 +1,22 @@
 import { testShopApi } from "@/api/testShopApi";
-import type { Product } from "@/interface/product.interface";
+import type { ShopProduct } from "@/interface/product.interface";
 
 export const getRelatedProductsAction = async (
   productId: string,
   limit = 6
-): Promise<Product[]> => {
-  const { data } = await testShopApi.get<Product[]>(
+): Promise<ShopProduct[]> => {
+  const { data } = await testShopApi.get<any[]>(
     `/products/${productId}/related`,
     { params: { limit } }
   );
 
-  // Normalizar URLs de imágenes igual que en el resto de la app
   return data.map((product) => ({
     ...product,
-    images: product.images.map((image) =>
-      image.includes("http")
-        ? image
-        : `${import.meta.env.VITE_API_URL}/files/product/${image}`
-    ),
+    images: (product.images as any[]).map((img: any) => {
+      const url = typeof img === 'string' ? img : img.url;
+      return url.includes('http')
+        ? url
+        : `${import.meta.env.VITE_API_URL}/files/product/${url}`;
+    }),
   }));
 };

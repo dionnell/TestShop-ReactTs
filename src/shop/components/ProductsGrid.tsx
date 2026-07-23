@@ -145,7 +145,7 @@ export const ProductsGrid = ({products} : Props) => {
                   id={product.id}
                   name={product.title}
                   price={product.price}
-                  image={product.images}
+                  image={product.images.map((image) => image.url)}
                   category={product.tags[0]}
                   size={product.sizes}
                   slug={product.slug}

@@ -1,7 +1,7 @@
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { CustomJumbotron } from "@/shop/components/CustomJumbotron"
 import { ProductsGrid } from "@/shop/components/ProductsGrid"
-import { useParams,  } from "react-router"
+import { useParams  } from "react-router"
 import { useProducts } from "@/shop/hooks/useProducts"
 
 
