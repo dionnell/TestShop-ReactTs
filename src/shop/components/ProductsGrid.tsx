@@ -4,7 +4,7 @@ import { ProductCard } from "./ProductCard"
 import { FilterSidebar } from "./FilterSidebar"
 import { useSearchParams } from "react-router"
 import { useState } from "react"
-import type { Product } from "@/interface/product.interface"
+import type { ShopProduct } from "@/interface/product.interface"
 import {
   Combobox,
   ComboboxContent,
@@ -17,7 +17,7 @@ import { CustomFullScreenLoading } from "@/components/custom/CustomFullScreenLoa
 
 
 interface Props {
-    products: Product[],
+    products: ShopProduct[],
 }
 
 const limitOptions = [
@@ -33,6 +33,8 @@ export const ProductsGrid = ({products} : Props) => {
   const [showFilters, setShowFilters] = useState(false)
   
   const viewMode = searchParams.get('viewMode') || 'grid'
+  const currentLimit = Number(searchParams.get('limit') || 9)
+
 
   const handleViewModeChange = (mode: 'grid' | 'list') => {
     searchParams.set('viewMode', mode)
@@ -40,7 +42,7 @@ export const ProductsGrid = ({products} : Props) => {
   }
 
   const handleLimitChange = (value: number | null) => {
-    if(value != null) {
+    if(value != null && value !== currentLimit) {
     searchParams.set('page', '1') // Resetear a la página 1 al cambiar el filtro
     searchParams.set('limit', String(value))
     setSearchParams(searchParams)
@@ -70,7 +72,7 @@ export const ProductsGrid = ({products} : Props) => {
               <span className='text-xl font-light'>Vistas: </span>
               <Combobox 
                 items={limitOptions}
-                defaultValue={limitOptions[0]}
+                defaultValue={currentLimit}
                 onValueChange={handleLimitChange}
               >
                 <ComboboxInput placeholder="Select a framework" />
@@ -145,7 +147,7 @@ export const ProductsGrid = ({products} : Props) => {
                   id={product.id}
                   name={product.title}
                   price={product.price}
-                  image={product.images.map((image) => image.url)}
+                  image={product.images}
                   category={product.tags[0]}
                   size={product.sizes}
                   slug={product.slug}
