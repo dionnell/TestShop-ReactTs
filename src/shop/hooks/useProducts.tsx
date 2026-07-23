@@ -9,12 +9,12 @@ export const useProducts = () => {
     const [ searchParams ] = useSearchParams()
 
     const query = searchParams.get('query') || ''
-    const limit = searchParams.get('limit') || 9
-    const page = searchParams.get('page') || 1
+    const limit = Number(searchParams.get('limit') || 9)
+    const page  = Number(searchParams.get('page')  || 1)
     const sizes = searchParams.get('sizes')
-
-    const offset = (Number(page) -1 ) * Number(limit)
-
+ 
+    const offset = (page - 1) * limit
+    
     const price = searchParams.get('price') || 'any'
 
     let minPrice = undefined
