@@ -112,7 +112,7 @@ export const FavoriteUser = () => {
                     className="shrink-0 h-24 w-24 rounded-xl overflow-hidden bg-gray-100 block"
                   >
                     <img
-                      src={favorite.product.images?.[0] ?? "https://placehold.co/96"}
+                      src={favorite.product.images?.map((img) => img.url)?.[0] ?? "https://placehold.co/96"}
                       alt={favorite.product.title}
                       className="h-full w-full object-cover hover:scale-105 transition-transform duration-200"
                     />
