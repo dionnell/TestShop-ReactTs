@@ -1,5 +1,5 @@
 import { testShopApi } from "@/api/testShopApi";
-import type { Product } from "@/interface/product.interface";
+import type { Product, ProductImage } from "@/interface/product.interface";
 
 export interface FavoriteItem {
   id: string;
@@ -12,6 +12,16 @@ export interface GetFavoritesResponse {
   favorites: FavoriteItem[];
 }
 
+const normalizeImage = (img: any): ProductImage => {
+  if (typeof img === "string") {
+    const url = img.includes("http")
+      ? img
+      : `${import.meta.env.VITE_API_URL}/files/product/${img}`;
+    return { id: 0, url, publicId: undefined, order: 0 };
+  }
+  return img as ProductImage;
+};
+
 export const getFavorites = async (): Promise<GetFavoritesResponse> => {
   const { data } = await testShopApi.get<GetFavoritesResponse>("/favorites");
 
@@ -21,11 +31,7 @@ export const getFavorites = async (): Promise<GetFavoritesResponse> => {
       ...favorite,
       product: {
         ...favorite.product,
-        images: favorite.product.images?.map((image) =>
-          image.includes("http")
-            ? image
-            : `${import.meta.env.VITE_API_URL}/files/product/${image}`
-        ) ?? [],
+        images: (favorite.product.images as unknown as any[])?.map(normalizeImage) ?? [],
       },
     })),
   };
