@@ -22,8 +22,8 @@ export const getProductByIdAction = async (id: string): Promise<Product> => {
   const { data } = await testShopApi.get<Product>(`/products/${id}`);
 
   // Backend now returns image objects with { id, url, publicId, order }
-  const images: ProductImage[] = (data.images as unknown as (ProductImage | string)[]).map(
-    (img, index) => {
+  const images: ProductImage[] = (data.images as unknown as (ProductImage | string)[])
+    .map((img, index) => {
       if (typeof img === 'string') {
         const url = img.includes('http')
           ? img
@@ -31,8 +31,8 @@ export const getProductByIdAction = async (id: string): Promise<Product> => {
         return { id: index, url, publicId: undefined, order: index };
       }
       return img;
-    },
-  );
+    })
+    .sort((a, b) => a.order - b.order); // garantizar orden correcto
 
   return { ...data, images };
 };
