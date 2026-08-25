@@ -13,12 +13,17 @@ export interface FileUploadResponse {
 const uploadFile = async (file: File, slug: string): Promise<FileUploadResponse> => {
   const formData = new FormData();
   formData.append('file', file);
-  const { data } = await testShopApi<FileUploadResponse>({
-    url:    `/files/product?slug=${encodeURIComponent(slug)}`,
-    method: 'POST',
-    data:   formData,
-  });
-  return data;
+  try {
+    const { data } = await testShopApi<FileUploadResponse>({
+      url:    `/files/product?slug=${encodeURIComponent(slug)}`,
+      method: 'POST',
+      data:   formData,
+    });
+    return data;
+  } catch (error: any) {
+    const msg = error?.response?.data?.message ?? error?.message ?? 'Upload failed';
+    throw new Error(`Image upload failed: ${msg}`);
+  }
 };
 
 /** Delete one image by its DB id — also removes from Cloudinary */
@@ -70,11 +75,15 @@ export const createUpdateProductAction = async (
     method: isCreating ? 'POST' : 'PATCH',
     data: {
       ...rest,
-      images: allImages.map((img, index) => ({
-        url:      img.url,
-        publicId: img.publicId,
-        order:    index,
-      })),
+      images: allImages.map((img, index) => {
+        const imagePayload: { url: string; order: number; publicId?: string } = {
+          url:   img.url,
+          order: index,
+        };
+        // Only include publicId if it's a real value — omit null/undefined
+        if (img.publicId) imagePayload.publicId = img.publicId;
+        return imagePayload;
+      }),
     },
   });
 

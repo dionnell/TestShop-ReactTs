@@ -27,11 +27,13 @@ export const AdminProductPage = () => {
         })
         navigate(`/admin/products/${data.id}`)
       },
-      onError: (error) => {
-        console.log({error})
-        toast.error('Error al actualizar el producto',{
-          position: 'top-right'
-        })
+      onError: (error: any) => {
+        console.error({error})
+        const msg = error?.response?.data?.message
+          ?? error?.message
+          ?? 'Error desconocido';
+        const display = Array.isArray(msg) ? msg.join(' | ') : msg;
+        toast.error(`Error: ${display}`, { position: 'top-right' })
       }
     });
   }
